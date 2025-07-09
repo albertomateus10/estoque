@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Estoque</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
+    h1 { color: #2c3e50; }
+    .header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    }
+    .base-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1em;
+    background: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #0001;
+    }
+    .base-upload label {
+    font-weight: bold;
+    color: #2980b9;
+    margin-right: 6px;
+    }
+    .base-upload input[type="file"] {
+    display: none;
+    }
+    .base-upload .file-btn {
+    background: #7ed6b5;
+    color: #23272f;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    }
+    .base-upload .file-btn:hover {
+    background: #5a8ac6;
+    color: #fff;
+    }
+    .base-upload .file-name {
+    font-size: 0.98em;
+    color: #555;
+    margin-left: 8px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    }
+    .tabs {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    background: #23272f;
+    padding: 24px 0 0 24px;
+    border-radius: 0 0 12px 12px;
+    border-bottom: 4px solid #7ed6b5;
+    box-shadow: 0 2px 8px #0002;
+    }
+    .tab-btn {
+    padding: 18px 40px 16px 40px;
+    background: #374151;
+    border: none;
+    border-radius: 12px 12px 0 0;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.3em;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-bottom: -4px;
+    box-shadow: 0 2px 8px #0001;
+    outline: none;
+    position: relative;
+    }
+    .tab-btn.active {
+    background: #7ed6b5;
+    color: #23272f;
+    box-shadow: 0 6px 18px #0002;
+    z-index: 2;
+    }
+    .tab-btn:not(.active):hover {
+    background: #42506a;
+    color: #fff;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .summary { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+    .summary-box { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 12px 18px; min-width: 170px; }
+    .summary-box strong { font-size: 1.3em; color: #2980b9; }
+    .summary-box.margem { background: #5a8ac6; color: #fff; }
+    .summary-box.margem strong { color: #fff; }
+    .summary-box.km { background: #f7b731; color: #23272f; }
+    .summary-box.km strong { color: #23272f; }
+    .filters { margin-bottom: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .filters input { margin-right: 10px; padding: 5px 8px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { border: 1px solid #ddd; padding: 8px 6px; text-align: left; }
+    th { background: #2980b9; color: #fff; cursor: pointer; user-select: none; }
+    tr:nth-child(even) { background: #f2f2f2; }
+    tr:hover { background: #eaf6ff; }
+    .sort-arrow { font-size: 0.9em; margin-left: 3px; }
+    .charts { display: flex; gap: 30px; margin: 30px 0; flex-wrap: wrap; }
+    .chart-container { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 20px; flex: 1 1 350px; min-width: 320px; max-width: 480px; }
+    canvas { max-width: 420px !important; max-height: 320px !important; }
+    @media (max-width: 900px) {
+    .charts { flex-direction: column; gap: 20px; }
+    .chart-container { max-width: 100%; }
+    .header-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+    /* Multi-select styles */
+    .multiselect {
+    position: relative;
+    display: inline-block;
+    min-width: 180px;
+    margin-right: 10px;
+    }
+    .multiselect .selectBox {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    min-width: 160px;
+    user-select: none;
+    }
+    .multiselect .selectBox:after {
+    content: "▼";
+    font-size: 0.8em;
+    margin-left: auto;
+    color: #2980b9;
+    }
+    .multiselect .checkboxes {
+    display: none;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px #0002;
+    z-index: 10;
+    max-height: 220px;
+    overflow-y: auto;
+    min-width: 180px;
+    margin-top: 2px;
+    }
+    .multiselect.active .checkboxes {
+    display: block;
+    }
+    .multiselect label {
+    display: block;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 1em;
+    }
+    .multiselect label:hover {
+    background: #f2f2f2;
+    }
+  
+    .credit {
+      position: absolute;
+      bottom: 6px;
+      right: 20px;
+      color: #ffffff;
+      font-size: 0.75em;
+      pointer-events: none;
+    }
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="header-bar">
+    <div></div>
+    <div class="base-upload">
+    <label for="basefile">Base:</label>
+    <button class="file-btn" onclick="document.getElementById('basefile').click()">Selecionar Excel</button>
+    <input type="file" id="basefile" accept=".xlsx,.xls" />
+    <span class="file-name" id="basefile-name"></span>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)">Estoque Disponível</button>
+  
+    <div class="credit">Desenvolvido por Alberto Mateus para o Grupo San Marino.</div>
+  </div>
+
+  <!-- Aba 1: Estoque Disponível -->
+  <div class="tab-content active" id="tab-disponivel">
+    <div class="summary">
+    <div class="summary-box">
+    <div>Quantidade de veículos</div>
+    <strong id="qtd-disponivel"></strong>
+    </div>  <div class="summary-box">
+    <div>Média dos Dias de Estoque</div>
+    <strong id="media-dias-disponivel"></strong>
+    </div>
+    <div class="summary-box km">
+    <div>KM média dos Veículos</div>
+    <strong id="media-km-disponivel"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Média dos Anos dos Veículos</div>
+    <strong id="media-ano-disponivel"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Valor Médio do Estoque (Custo)</div>
+    <strong id="media-custo-disponivel"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Preço de Custo do estoque</div>
+    <strong id="total-custo-disponivel"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Preço de Venda do estoque</div>
+    <strong id="total-preco-disponivel"></strong>
+    </div>
+    <div class="summary-box margem">
+    <div>Margem Bruta Somada</div>
+    <strong id="margem-bruta-disponivel"></strong>
+    </div>
+    </div>
+    <div class="filters">
+    <input type="text" id="search-disponivel" placeholder="Buscar modelo, placa, cor...">
+    <div class="multiselect" id="multiselect-patio-disponivel"></div>
+    <div class="multiselect" id="multiselect-modelo-disponivel"></div>
+    <button onclick="resetFilters('disponivel')">Limpar Filtros</button>
+    </div>
+    <div class="charts">
+    <div class="chart-container">
+    <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Top 5 Modelos em Estoque</div>
+    <canvas id="pie-modelos"></canvas>
+    </div>
+    <div class="chart-container">
+    <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Quantidade / Dias em Estoque</div>
+    <canvas id="bar-dias"></canvas>
+    </div>
+    <div class="chart-container">
+    <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Estoque por Loja</div>
+    <canvas id="bar-lojas"></canvas>
+    </div>
+    </div>
+    <table id="tabela-disponivel">
+    <thead>
+    <tr>
+    <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
+    <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
+    <th data-col="dias">Dias <span class="sort-arrow"></span></th>
+    <th data-col="ano">Ano <span class="sort-arrow"></span></th>
+    <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
+    <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
+    <th data-col="placa">Placa <span class="sort-arrow"></span></th>
+    <th data-col="km">KM <span class="sort-arrow"></span></th>
+    <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
+    <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Aba 2: Repasses Não Vendidos -->
+  <div class="tab-content" id="tab-repasse">
+    <h1>REPASSSES NÃO VENDIDOS</h1>
+    <div class="summary">
+    <div class="summary-box">
+    <div>Quantidade de carros</div>
+    <strong id="qtd-repasse"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Média de dias de estoque</div>
+    <strong id="media-dias-repasse"></strong>
+    </div>
+    <div class="summary-box km">
+    <div>KM média dos carros</div>
+    <strong id="media-km-repasse"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Valor total de custo</div>
+    <strong id="total-custo-repasse"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Média por veículo</div>
+    <strong id="media-veiculo-repasse"></strong>
+    </div>
+    </div>
+    <div class="filters">
+    <input type="text" id="search-repasse" placeholder="Buscar modelo, placa, cor...">
+    <div class="multiselect" id="multiselect-patio-repasse"></div>
+    <button onclick="resetFilters('repasse')">Limpar Filtros</button>
+    </div>
+    <table id="tabela-repasse">
+    <thead>
+    <tr>
+    <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
+    <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
+    <th data-col="dias">Dias <span class="sort-arrow"></span></th>
+    <th data-col="ano">Ano <span class="sort-arrow"></span></th>
+    <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
+    <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
+    <th data-col="placa">Placa <span class="sort-arrow"></span></th>
+    <th data-col="km">KM <span class="sort-arrow"></span></th>
+    <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
+    <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Aba 3: Total -->
+  <div class="tab-content" id="tab-total">
+    <h1>TOTAL</h1>
+    <div class="summary">
+    <div class="summary-box">
+    <div>Quantidade total de veículos</div>
+    <strong id="qtd-total"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Média Dias em Estoque</div>
+    <strong id="media-dias-total"></strong>
+    </div>
+    <div class="summary-box km">
+    <div>KM média dos carros</div>
+    <strong id="media-km-total"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Soma Total Nota Fábrica</div>
+    <strong id="total-custo-total"></strong>
+    </div>
+    <div class="summary-box">
+    <div>Soma Total Preço Venda</div>
+    <strong id="total-preco-total"></strong>
+    </div>
+    <div class="summary-box margem">
+    <div>Margem Bruta Total</div>
+    <strong id="margem-bruta-total"></strong>
+    </div>
+    </div>
+    <div class="filters">
+    <input type="text" id="search-total" placeholder="Buscar modelo, placa, cor...">
+    <div class="multiselect" id="multiselect-patio-total"></div>
+    <div class="multiselect" id="multiselect-modelo-total"></div>
+    <button onclick="resetFilters('total')">Limpar Filtros</button>
+    </div>
+    <div class="charts">
+    <div class="chart-container">
+    <canvas id="pie-modelos-total"></canvas>
+    </div>
+    <div class="chart-container">
+    <canvas id="bar-dias-total"></canvas>
+    </div>
+    </div>
+  </div>
+
+  <script>
+    let dadosDisponivel = [];
+    let dadosRepasse = [];
+
+    let filtroDisponivel = { search: '', patio: [], modelo: [], dias: '' };
+    let filtroRepasse = { search: '', patio: [] };
+    let filtroTotal = { search: '', patio: [], modelo: [], dias: '' };
+    let sortDisponivel = { col: null, asc: true };
+    let sortRepasse = { col: null, asc: true };
+
+    function formatMoney(valor) {
+    return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+    function normalizeModelo(modelo) {
+    return (modelo||'').split(' ')[0].toUpperCase();
+    }
+    function showTab(idx) {
+    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab-content').forEach((tab, i) => {
+    tab.classList.toggle('active', i === idx);
+    });
+    if(idx === 2) {
+    preencherResumoTotal();
+    preencherGraficosTotal();
+    }
+    }
+
+    function calcularMediaKm(dados) {
+    const kms = dados.map(x => Number((x.km+'').replace(/\D/g,''))).filter(x => !isNaN(x) && x > 0);
+    if (!kms.length) return '0';
+    return (kms.reduce((a,b)=>a+b,0)/kms.length).toLocaleString('pt-BR', {maximumFractionDigits:0});
+    }
+
+    function calcularMediaAno(dados) {
+      const anos = dados
+        .map(x => {
+          if (!x.ano) return null;
+          // Se for "22/23", pega o segundo número
+          const partes = (x.ano + '').split('/');
+          let ano = partes.length > 1 ? partes[1] : partes[0];
+          // Converte para 4 dígitos se necessário
+          if (ano.length === 2) ano = '20' + ano;
+          return Number(ano);
+        })
+        .filter(x => !isNaN(x) && x > 1900 && x < 2100);
+      if (!anos.length) return '-';
+      return (anos.reduce((a, b) => a + b, 0) / anos.length).toFixed(1);
+    }
+
+    function preencherTabela(tab) {
+    const tbody = document.querySelector(`#tabela-${tab} tbody`);
+    let dados = (tab === 'disponivel' ? dadosDisponivel : dadosRepasse).slice();
+    let filtro = (tab === 'disponivel' ? filtroDisponivel : filtroRepasse);
+    if (filtro.search) {
+    const s = filtro.search.toLowerCase();
+    dados = dados.filter(item =>
+    (item.modelo||'').toLowerCase().includes(s) ||
+    (item.placa||'').toLowerCase().includes(s) ||
+    (item.cor||'').toLowerCase().includes(s)
+    );
+    }
+    if (filtro.patio && filtro.patio.length) {
+    dados = dados.filter(item => filtro.patio.includes(item.patio));
+    }
+    if (tab === 'disponivel' && filtro.modelo && filtro.modelo.length) {
+    dados = dados.filter(item => filtro.modelo.includes(normalizeModelo(item.modelo)));
+    }
+    if (tab === 'disponivel' && filtro.dias) {
+    const faixa = filtro.dias;
+    dados = dados.filter(item => {
+    if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
+    if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
+    if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
+    if (faixa === '91+') return item.dias >= 91;
+    });
+    }
+    let sort = (tab === 'disponivel' ? sortDisponivel : sortRepasse);
+    if (sort.col) {
+    dados.sort((a, b) => {
+    let vA = a[sort.col], vB = b[sort.col];
+    if (typeof vA === 'string') vA = vA.toLowerCase();
+    if (typeof vB === 'string') vB = vB.toLowerCase();
+    if (vA < vB) return sort.asc ? -1 : 1;
+    if (vA > vB) return sort.asc ? 1 : -1;
+    return 0;
+    });
+    }
+    tbody.innerHTML = '';
+    let totalCusto = 0, totalPreco = 0, totalDias = 0;
+    dados.forEach(item => {
+    totalCusto += Number(item.custo);
+    totalPreco += Number(item.preco);
+    totalDias += Number(item.dias);
+    tbody.innerHTML += `
+    <tr>
+    <td>${item.patio||''}</td>
+    <td>${item.modelo||''}</td>
+    <td>${item.dias||''}</td>
+    <td>${item.ano||''}</td>
+    <td>${item.cor||''}</td>
+    <td>${formatMoney(item.preco||0)}</td>
+    <td>${item.placa||''}</td>
+    <td>${item.km||''}</td>
+    <td>${item.descricao||''}</td>
+    <td>${formatMoney(item.custo||0)}</td>
+    </tr>
+    `;
+    });
+    if (tab === 'disponivel') {
+    document.getElementById('qtd-disponivel').textContent = dados.length;
+    document.getElementById('total-custo-disponivel').textContent = formatMoney(totalCusto);
+    document.getElementById('total-preco-disponivel').textContent = formatMoney(totalPreco);
+    document.getElementById('media-dias-disponivel').textContent = (totalDias / (dados.length || 1)).toFixed(2);
+    document.getElementById('margem-bruta-disponivel').textContent = formatMoney(totalPreco - totalCusto);
+    document.getElementById('media-km-disponivel').textContent = calcularMediaKm(dados);
+    document.getElementById('media-ano-disponivel').textContent = calcularMediaAno(dados);
+    // NOVO: valor médio do estoque (custo)
+    document.getElementById('media-custo-disponivel').textContent = dados.length ? formatMoney(totalCusto/dados.length) : 'R$ 0,00';
+    preencherGraficos('pie-modelos', 'bar-dias', dados);
+    atualizarBarraLojasDisponivel(dados);
+    } else {
+    document.getElementById('qtd-repasse').textContent = dados.length;
+    document.getElementById('total-custo-repasse').textContent = formatMoney(totalCusto);
+    document.getElementById('media-veiculo-repasse').textContent = formatMoney(totalCusto / (dados.length || 1));
+    document.getElementById('media-dias-repasse').textContent = (totalDias / (dados.length || 1)).toFixed(1);
+    document.getElementById('media-km-repasse').textContent = calcularMediaKm(dados);
+    }
+    }
+    function preencherResumoTotal() {
+    let dados = [...dadosDisponivel, ...dadosRepasse];
+    if (filtroTotal.search) {
+    const s = filtroTotal.search.toLowerCase();
+    dados = dados.filter(item =>
+    (item.modelo||'').toLowerCase().includes(s) ||
+    (item.placa||'').toLowerCase().includes(s) ||
+    (item.cor||'').toLowerCase().includes(s)
+    );
+    }
+    if (filtroTotal.patio && filtroTotal.patio.length) {
+    dados = dados.filter(item => filtroTotal.patio.includes(item.patio));
+    }
+    if (filtroTotal.modelo && filtroTotal.modelo.length) {
+    dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo)));
+    }
+    if (filtroTotal.dias) {
+    const faixa = filtroTotal.dias;
+    dados = dados.filter(item => {
+    if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
+    if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
+    if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
+    if (faixa === '91+') return item.dias >= 91;
+    });
+    }
+    const totalQtd = dados.length;
+    const totalCusto = dados.reduce((a,b)=>a+Number(b.custo),0);
+    const totalPreco = dados.reduce((a,b)=>a+Number(b.preco),0);
+    const totalDias = dados.reduce((a,b)=>a+Number(b.dias),0);
+    document.getElementById('qtd-total').textContent = totalQtd;
+    document.getElementById('total-custo-total').textContent = formatMoney(totalCusto);
+    document.getElementById('total-preco-total').textContent = formatMoney(totalPreco);
+    document.getElementById('media-dias-total').textContent = (totalDias / (totalQtd || 1)).toFixed(2);
+    document.getElementById('margem-bruta-total').textContent = formatMoney(totalPreco - totalCusto);
+    document.getElementById('media-km-total').textContent = calcularMediaKm(dados);
+    }
+    function preencherGraficosTotal() {
+    let dados = [...dadosDisponivel, ...dadosRepasse];
+    if (filtroTotal.search) {
+    const s = filtroTotal.search.toLowerCase();
+    dados = dados.filter(item =>
+    (item.modelo||'').toLowerCase().includes(s) ||
+    (item.placa||'').toLowerCase().includes(s) ||
+    (item.cor||'').toLowerCase().includes(s)
+    );
+    }
+    if (filtroTotal.patio && filtroTotal.patio.length) {
+    dados = dados.filter(item => filtroTotal.patio.includes(item.patio));
+    }
+    if (filtroTotal.modelo && filtroTotal.modelo.length) {
+    dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo)));
+    }
+    if (filtroTotal.dias) {
+    const faixa = filtroTotal.dias;
+    dados = dados.filter(item => {
+    if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
+    if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
+    if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
+    if (faixa === '91+') return item.dias >= 91;
+    });
+    }
+    preencherGraficos('pie-modelos-total', 'bar-dias-total', dados, true);
+    }
+    function preencherGraficos(pieId, barId, dados, isTotal) {
+    // Pie dos modelos
+    const modelos = {};
+    dados.forEach(item => {
+    const nome = normalizeModelo(item.modelo||'');
+    modelos[nome] = (modelos[nome] || 0) + 1;
+    });
+    const topModelos = Object.entries(modelos).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const pieModelosData = {
+    labels: topModelos.map(x => x[0]),
+    datasets: [{
+    data: topModelos.map(x => x[1]),
+    backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a','#8854d0'],
+    borderColor: '#fff',
+    borderWidth: 3
+    }]
+    };
+    if (window[pieId+'Chart']) window[pieId+'Chart'].destroy();
+    window[pieId+'Chart'] = new Chart(document.getElementById(pieId), {
+    type: 'pie',
+    data: pieModelosData,
+    options: {
+    plugins: {
+    legend: { position: 'top' },
+    tooltip: { enabled: true }
+    },
+    onClick: (evt, elements) => {
+    if (elements.length) {
+    const idx = elements[0].index;
+    if (isTotal) {
+    filtroTotal.modelo = [pieModelosData.labels[idx]];
+    updateMultiSelect('multiselect-modelo-total', getModelosTotal(), filtroTotal.modelo, v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+    preencherResumoTotal();
+    preencherGraficosTotal();
+    } else {
+    filtroDisponivel.modelo = [pieModelosData.labels[idx]];
+    updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), filtroDisponivel.modelo, v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+    preencherTabela('disponivel');
+    }
+    }
+    }
+    }
+    });
+
+    // Barras de dias
+    const faixas = { '1-30': 0, '31-60': 0, '61-90': 0, '91+': 0 };
+    dados.forEach(item => {
+    if (item.dias >= 1 && item.dias <= 30) faixas['1-30']++;
+    else if (item.dias >= 31 && item.dias <= 60) faixas['31-60']++;
+    else if (item.dias >= 61 && item.dias <= 90) faixas['61-90']++;
+    else if (item.dias >= 91) faixas['91+']++;
+    });
+    const barDiasData = {
+    labels: Object.keys(faixas),
+    datasets: [{
+    label: 'Qtd. de carros',
+    data: Object.values(faixas),
+    backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a']
+    }]
+    };
+    if (window[barId+'Chart']) window[barId+'Chart'].destroy();
+    window[barId+'Chart'] = new Chart(document.getElementById(barId), {
+    type: 'bar',
+    data: barDiasData,
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+    legend: { display: false },
+    tooltip: { enabled: true }
+    },
+    scales: {
+    x: { title: { display: true, text: 'Dias em Estoque' } },
+    y: { title: { display: true, text: 'Quantidade de veículos' }, beginAtZero: true }
+    },
+    onClick: (evt, elements) => {
+    if (elements.length) {
+    const idx = elements[0].index;
+    if (isTotal) {
+    filtroTotal.dias = barDiasData.labels[idx];
+    preencherResumoTotal();
+    preencherGraficosTotal();
+    } else {
+    filtroDisponivel.dias = barDiasData.labels[idx];
+    preencherTabela('disponivel');
+    }
+    }
+    }
+    }
+    });
+    }
+
+    // Gráfico de barras por loja na aba Estoque Disponível, ordenado do maior para o menor
+    function atualizarBarraLojasDisponivel(dados) {
+    const contagem = {};
+    dados.forEach(item => {
+    let loja = (item.patio || '').trim();
+    if (!loja) loja = 'Outros';
+    contagem[loja] = (contagem[loja] || 0) + 1;
+    });
+    // Ordena do maior para o menor
+    const lojasOrdenadas = Object.entries(contagem)
+    .sort((a, b) => b[1] - a[1])
+    .map(x => x[0]);
+    const quantidades = lojasOrdenadas.map(loja => contagem[loja]);
+    if (window.barLojasDisponivelChart) window.barLojasDisponivelChart.destroy();
+    window.barLojasDisponivelChart = new Chart(document.getElementById('bar-lojas'), {
+    type: 'bar',
+    data: {
+    labels: lojasOrdenadas,
+    datasets: [{
+    label: 'Estoque por Loja',
+    data: quantidades,
+    backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a','#8854d0','#20bf6b','#fd9644','#a55eea','#778ca3','#e17055']
+    }]
+    },
+    options: {
+    plugins: { legend: { display: false } },
+    indexAxis: 'x',
+    scales: {
+    x: { title: { display: false }, grid: { display: false } },
+    y: { title: { display: false }, beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
+    },
+    responsive: true,
+    maintainAspectRatio: false
+    }
+    });
+    }
+
+    function resetFilters(tab) {
+    if (tab === 'repasse') {
+    filtroRepasse = { search: '', patio: [] };
+    document.getElementById('search-repasse').value = '';
+    updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
+    preencherTabela('repasse');
+    } else if (tab === 'disponivel') {
+    filtroDisponivel = { search: '', patio: [], modelo: [], dias: '' };
+    document.getElementById('search-disponivel').value = '';
+    updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
+    updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+    preencherTabela('disponivel');
+    } else if (tab === 'total') {
+    filtroTotal = { search: '', patio: [], modelo: [], dias: '' };
+    document.getElementById('search-total').value = '';
+    updateMultiSelect('multiselect-patio-total', getPatiosTotal(), [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
+    updateMultiSelect('multiselect-modelo-total', getModelosTotal(), [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+    preencherResumoTotal();
+    preencherGraficosTotal();
+    }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('search-repasse').addEventListener('input', e => {
+    filtroRepasse.search = e.target.value;
+    preencherTabela('repasse');
+    });
+    document.getElementById('search-disponivel').addEventListener('input', e => {
+    filtroDisponivel.search = e.target.value;
+    preencherTabela('disponivel');
+    });
+    document.getElementById('search-total').addEventListener('input', e => {
+    filtroTotal.search = e.target.value;
+    preencherResumoTotal();
+    preencherGraficosTotal();
+    });
+    document.querySelectorAll('#tabela-repasse th').forEach(th => {
+    th.addEventListener('click', function() {
+    const col = th.getAttribute('data-col');
+    if (!col) return;
+    if (sortRepasse.col === col) sortRepasse.asc = !sortRepasse.asc;
+    else { sortRepasse.col = col; sortRepasse.asc = true; }
+    atualizarSetas('repasse', sortRepasse);
+    preencherTabela('repasse');
+    });
+    });
+    document.querySelectorAll('#tabela-disponivel th').forEach(th => {
+    th.addEventListener('click', function() {
+    const col = th.getAttribute('data-col');
+    if (!col) return;
+    if (sortDisponivel.col === col) sortDisponivel.asc = !sortDisponivel.asc;
+    else { sortDisponivel.col = col; sortDisponivel.asc = true; }
+    atualizarSetas('disponivel', sortDisponivel);
+    preencherTabela('disponivel');
+    });
+    });
+    preencherTabela('disponivel');
+    preencherTabela('repasse');
+    preencherResumoTotal();
+    preencherGraficosTotal();
+    });
+    function atualizarSetas(tab, sort) {
+    const ths = document.querySelectorAll(`#tabela-${tab} th`);
+    ths.forEach(th => {
+    const col = th.getAttribute('data-col');
+    const arrow = th.querySelector('.sort-arrow');
+    if (col === sort.col) {
+    arrow.textContent = sort.asc ? '▲' : '▼';
+    } else {
+    arrow.textContent = '';
+    }
+    });
+    }
+
+    // Multi-select helpers
+    function createMultiSelect(id, options, selected, onChange, label) {
+    const container = document.getElementById(id);
+    container.innerHTML = `
+    <div class="selectBox">${label}: <span class="selected-items" style="margin-left:6px;color:#2980b9">${selected.length ? selected.join(', ') : 'Todos'}</span></div>
+    <div class="checkboxes"></div>
+    `;
+    const selectBox = container.querySelector('.selectBox');
+    const checkboxes = container.querySelector('.checkboxes');
+    checkboxes.innerHTML = '';
+    options.forEach(opt => {
+    const checked = selected.includes(opt) ? 'checked' : '';
+    checkboxes.innerHTML += `<label><input type="checkbox" value="${opt}" ${checked}> ${opt}</label>`;
+    });
+    selectBox.onclick = e => {
+    container.classList.toggle('active');
+    e.stopPropagation();
+    };
+    checkboxes.onclick = e => e.stopPropagation();
+    document.body.addEventListener('click', () => container.classList.remove('active'));
+    checkboxes.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.onchange = () => {
+    const checked = Array.from(checkboxes.querySelectorAll('input[type=checkbox]:checked')).map(x=>x.value);
+    container.querySelector('.selected-items').textContent = checked.length ? checked.join(', ') : 'Todos';
+    onChange(checked);
+    };
+    });
+    }
+    function updateMultiSelect(id, options, selected, onChange, label) {
+    createMultiSelect(id, options, selected, onChange, label);
+    }
+    function getPatiosDisponivel() {
+    return [...new Set(dadosDisponivel.map(x=>x.patio).filter(Boolean))].sort();
+    }
+    function getModelosDisponivel() {
+    return [...new Set(dadosDisponivel.map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort();
+    }
+    function getPatiosRepasse() {
+    return [...new Set(dadosRepasse.map(x=>x.patio).filter(Boolean))].sort();
+    }
+    function getPatiosTotal() {
+    return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>x.patio).filter(Boolean))].sort();
+    }
+    function getModelosTotal() {
+    return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort();
+    }
+
+    // Função para identificar colunas por similaridade
+    function findCol(obj, keys) {
+    const norm = s => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/gi,'').toLowerCase() : '';
+    const objKeys = Object.keys(obj).map(k => norm(k));
+    for (let key of keys) {
+    let idx = objKeys.findIndex(k => k.includes(norm(key)));
+    if (idx !== -1) return Object.keys(obj)[idx];
+    }
+    return null;
+    }
+
+    document.getElementById('basefile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('basefile-name').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+    const data = new Uint8Array(evt.target.result);
+    const workbook = XLSX.read(data, {type: 'array'});
+    let sheetDisponivel, sheetRepasse;
+    workbook.SheetNames.forEach(name => {
+    const norm = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    if (!sheetDisponivel && norm.includes('dispon')) sheetDisponivel = workbook.Sheets[name];
+    if (!sheetRepasse && norm.includes('repasse')) sheetRepasse = workbook.Sheets[name];
+    });
+    if (!sheetDisponivel) sheetDisponivel = workbook.Sheets[workbook.SheetNames[0]];
+    if (!sheetRepasse) sheetRepasse = workbook.Sheets[workbook.SheetNames[1]];
+
+    function mapRow(row) {
+    return {
+    patio: row[findCol(row, ['patio','pátio'])] || '',
+    modelo: row[findCol(row, ['modelo','nome do modelo'])] || '',
+    dias: Number(row[findCol(row, ['dpt','dias','dias estoque','dias em estoque'])] || 0),
+    ano: row[findCol(row, ['ano/m','ano','ano modelo'])] || '',
+    cor: row[findCol(row, ['cor externa','cor'])] || '',
+    preco: Number(row[findCol(row, ['preco venda','preço venda','preco','preço'])] || 0),
+    placa: row[findCol(row, ['placa'])] || '',
+    km: row[findCol(row, ['km','quilometragem'])] || '',
+    descricao: row[findCol(row, ['descricao situacao','descrição situação','situacao','situação'])] || '',
+    custo: Number(row[findCol(row, ['total nota fabrica','nota fabrica','custo','valor de custo'])] || 0)
+    }
+    }
+    dadosDisponivel = XLSX.utils.sheet_to_json(sheetDisponivel, {defval: ''}).map(mapRow);
+    dadosRepasse = XLSX.utils.sheet_to_json(sheetRepasse, {defval: ''}).map(mapRow);
+
+    // Multi-selects
+    updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), filtroDisponivel.patio, v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
+    updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), filtroDisponivel.modelo, v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+    updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), filtroRepasse.patio, v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
+    updateMultiSelect('multiselect-patio-total', getPatiosTotal(), filtroTotal.patio, v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
+    updateMultiSelect('multiselect-modelo-total', getModelosTotal(), filtroTotal.modelo, v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+
+    preencherTabela('disponivel');
+    preencherTabela('repasse');
+    preencherResumoTotal();
+    preencherGraficosTotal();
+    };
+    reader.readAsArrayBuffer(file);
+    });
+
+    // Inicialização dos multi-selects vazios
+    document.addEventListener('DOMContentLoaded', function() {
+    updateMultiSelect('multiselect-patio-disponivel', [], [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
+    updateMultiSelect('multiselect-modelo-disponivel', [], [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+    updateMultiSelect('multiselect-patio-repasse', [], [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
+    updateMultiSelect('multiselect-patio-total', [], [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
+    updateMultiSelect('multiselect-modelo-total', [], [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+    });
+  </script>
+</body>
+</html>
