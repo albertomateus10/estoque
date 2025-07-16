@@ -216,6 +216,10 @@
     <strong id="media-custo-disponivel"></strong>
     </div>
     <div class="summary-box">
+    <div>Média do Preço de Venda</div>
+    <strong id="media-preco-venda-disponivel"></strong>
+    </div>
+    <div class="summary-box">
     <div>Preço de Custo do estoque</div>
     <strong id="total-custo-disponivel"></strong>
     </div>
@@ -492,6 +496,8 @@
     document.getElementById('media-ano-disponivel').textContent = calcularMediaAno(dados);
     // NOVO: valor médio do estoque (custo)
     document.getElementById('media-custo-disponivel').textContent = dados.length ? formatMoney(totalCusto/dados.length) : 'R$ 0,00';
+    // NOVO: média do preço de venda
+    document.getElementById('media-preco-venda-disponivel').textContent = dados.length ? formatMoney(totalPreco/dados.length) : 'R$ 0,00';
     preencherGraficos('pie-modelos', 'bar-dias', dados);
     atualizarBarraLojasDisponivel(dados);
     } else {
