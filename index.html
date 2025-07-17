@@ -173,6 +173,26 @@
     pointer-events: none;
     }
 
+    /* Indicadores de status */
+    .status-info {
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 10px 0;
+    font-size: 0.9em;
+    }
+    
+    .status-success {
+    background: #e8f5e8;
+    border: 1px solid #4caf50;
+    color: #2e7d32;
+    }
+    
+    .status-error {
+    background: #ffebee;
+    border: 1px solid #f44336;
+    color: #c62828;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -187,6 +207,10 @@
     <span class="file-name" id="basefile-name"></span>
     </div>
   </div>
+  
+  <!-- Indicador de status -->
+  <div id="status-info" class="status-info" style="display: none;"></div>
+  
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab(0)">Estoque Disponível</button>
   
@@ -198,42 +222,42 @@
     <div class="summary">
     <div class="summary-box">
     <div>Quantidade de veículos</div>
-    <strong id="qtd-disponivel"></strong>
+    <strong id="qtd-disponivel">0</strong>
     </div>  <div class="summary-box">
     <div>Média dos Dias de Estoque</div>
-    <strong id="media-dias-disponivel"></strong>
+    <strong id="media-dias-disponivel">0</strong>
     </div>
     <div class="summary-box km">
     <div>KM média dos Veículos</div>
-    <strong id="media-km-disponivel"></strong>
+    <strong id="media-km-disponivel">0</strong>
     </div>
     <div class="summary-box">
     <div>Média dos Anos dos Veículos</div>
-    <strong id="media-ano-disponivel"></strong>
+    <strong id="media-ano-disponivel">0</strong>
     </div>
     <div class="summary-box">
     <div>Valor Médio do Estoque (Custo)</div>
-    <strong id="media-custo-disponivel"></strong>
+    <strong id="media-custo-disponivel">R$ 0,00</strong>
     </div>
     <div class="summary-box">
     <div>Média do Preço de Venda</div>
-    <strong id="media-preco-venda-disponivel"></strong>
+    <strong id="media-preco-venda-disponivel">R$ 0,00</strong>
     </div>
     <div class="summary-box">
     <div>Preço de Custo do estoque</div>
-    <strong id="total-custo-disponivel"></strong>
+    <strong id="total-custo-disponivel">R$ 0,00</strong>
     </div>
     <div class="summary-box">
     <div>Preço de Venda do estoque</div>
-    <strong id="total-preco-disponivel"></strong>
+    <strong id="total-preco-disponivel">R$ 0,00</strong>
     </div>
     <div class="summary-box margem">
     <div>Margem Bruta Somada</div>
-    <strong id="margem-bruta-disponivel"></strong>
+    <strong id="margem-bruta-disponivel">R$ 0,00</strong>
     </div>
     <div class="summary-box margem">
     <div>% da Margem Bruta</div>
-    <strong id="margem-percent-disponivel"></strong>
+    <strong id="margem-percent-disponivel">0%</strong>
     </div>
     </div>
     <div class="filters">
@@ -281,23 +305,23 @@
     <div class="summary">
     <div class="summary-box">
     <div>Quantidade de carros</div>
-    <strong id="qtd-repasse"></strong>
+    <strong id="qtd-repasse">0</strong>
     </div>
     <div class="summary-box">
     <div>Média de dias de estoque</div>
-    <strong id="media-dias-repasse"></strong>
+    <strong id="media-dias-repasse">0</strong>
     </div>
     <div class="summary-box km">
     <div>KM média dos carros</div>
-    <strong id="media-km-repasse"></strong>
+    <strong id="media-km-repasse">0</strong>
     </div>
     <div class="summary-box">
     <div>Valor total de custo</div>
-    <strong id="total-custo-repasse"></strong>
+    <strong id="total-custo-repasse">R$ 0,00</strong>
     </div>
     <div class="summary-box">
     <div>Média por veículo</div>
-    <strong id="media-veiculo-repasse"></strong>
+    <strong id="media-veiculo-repasse">R$ 0,00</strong>
     </div>
     </div>
     <div class="filters">
@@ -330,31 +354,31 @@
     <div class="summary">
     <div class="summary-box">
     <div>Quantidade total de veículos</div>
-    <strong id="qtd-total"></strong>
+    <strong id="qtd-total">0</strong>
     </div>
     <div class="summary-box">
     <div>Média Dias em Estoque</div>
-    <strong id="media-dias-total"></strong>
+    <strong id="media-dias-total">0</strong>
     </div>
     <div class="summary-box km">
     <div>KM média dos carros</div>
-    <strong id="media-km-total"></strong>
+    <strong id="media-km-total">0</strong>
     </div>
     <div class="summary-box">
     <div>Soma Total Nota Fábrica</div>
-    <strong id="total-custo-total"></strong>
+    <strong id="total-custo-total">R$ 0,00</strong>
     </div>
     <div class="summary-box">
     <div>Soma Total Preço Venda</div>
-    <strong id="total-preco-total"></strong>
+    <strong id="total-preco-total">R$ 0,00</strong>
     </div>
     <div class="summary-box margem">
     <div>Margem Bruta Total</div>
-    <strong id="margem-bruta-total"></strong>
+    <strong id="margem-bruta-total">R$ 0,00</strong>
     </div>
     <div class="summary-box margem">
     <div>% da Margem Bruta</div>
-    <strong id="margem-percent-total"></strong>
+    <strong id="margem-percent-total">0%</strong>
     </div>
     </div>
     <div class="filters">
@@ -382,6 +406,20 @@
     let filtroTotal = { search: '', patio: [], modelo: [], dias: '' };
     let sortDisponivel = { col: null, asc: true };
     let sortRepasse = { col: null, asc: true };
+
+    // Função para mostrar status
+    function showStatus(message, isError = false) {
+      const statusDiv = document.getElementById('status-info');
+      statusDiv.style.display = 'block';
+      statusDiv.className = `status-info ${isError ? 'status-error' : 'status-success'}`;
+      statusDiv.innerHTML = message;
+      
+      if (!isError) {
+        setTimeout(() => {
+          statusDiv.style.display = 'none';
+        }, 5000);
+      }
+    }
 
     function formatMoney(valor) {
     return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -834,63 +872,264 @@
     return null;
     }
 
+    // FUNÇÃO MELHORADA: Detecta automaticamente a linha de início dos dados
+    function findDataStartRow(sheet) {
+      try {
+        if (!sheet || !sheet['!ref']) {
+          console.log('Sheet inválida ou sem referência');
+          return 0;
+        }
+        
+        const range = XLSX.utils.decode_range(sheet['!ref']);
+        console.log('Range da planilha:', range);
+        
+        // Palavras-chave que indicam cabeçalho
+        const headerKeywords = [
+          'modelo', 'patio', 'pátio', 'placa', 'dias', 'ano', 'cor', 
+          'preco', 'preço', 'km', 'custo', 'fabrica', 'fábrica',
+          'situacao', 'situação', 'descricao', 'descrição', 'venda',
+          'estoque', 'quilometragem', 'nota'
+        ];
+        
+        let bestRow = 0;
+        let bestScore = 0;
+        
+        // Analisa até 15 linhas ou até o fim da planilha
+        const maxRowsToCheck = Math.min(15, range.e.r + 1);
+        
+        for (let row = 0; row < maxRowsToCheck; row++) {
+          let score = 0;
+          let filledCells = 0;
+          let hasKeywords = false;
+          
+          // Verifica todas as colunas da linha
+          for (let col = range.s.c; col <= range.e.c; col++) {
+            const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+            const cell = sheet[cellAddress];
+            
+            if (cell && cell.v !== undefined && cell.v !== null && String(cell.v).trim() !== '') {
+              filledCells++;
+              
+              const cellValue = String(cell.v).toLowerCase().trim();
+              
+              // Verifica se contém palavras-chave de cabeçalho
+              for (let keyword of headerKeywords) {
+                if (cellValue.includes(keyword)) {
+                  score += 10;
+                  hasKeywords = true;
+                  break;
+                }
+              }
+              
+              // Pontuação adicional para células com texto (não apenas números)
+              if (isNaN(cell.v) && cellValue.length > 2) {
+                score += 2;
+              }
+            }
+          }
+          
+          // Bonificação por ter muitas células preenchidas
+          score += filledCells;
+          
+          // Penalidade para linhas muito no início se não tiverem keywords
+          if (row < 3 && !hasKeywords && filledCells < 5) {
+            score -= 5;
+          }
+          
+          console.log(`Linha ${row + 1}: ${filledCells} células, score: ${score}, keywords: ${hasKeywords}`);
+          
+          // Atualiza a melhor linha se o score for maior
+          if (score > bestScore && filledCells >= 3) {
+            bestScore = score;
+            bestRow = row;
+          }
+        }
+        
+        console.log(`Melhor linha detectada: ${bestRow + 1} (score: ${bestScore})`);
+        return bestRow;
+        
+      } catch (error) {
+        console.error('Erro na detecção da linha de início:', error);
+        return 0;
+      }
+    }
+
+    // FUNÇÃO MELHORADA: Converte planilha para JSON com detecção automática
+    function convertSheetToData(sheet) {
+      try {
+        if (!sheet || !sheet['!ref']) {
+          console.log('Sheet inválida');
+          return { data: [], detectedRow: 1 };
+        }
+        
+        const headerRow = findDataStartRow(sheet);
+        console.log(`Usando linha ${headerRow + 1} como cabeçalho`);
+        
+        // Converte a planilha inteira para JSON primeiro
+        const allData = XLSX.utils.sheet_to_json(sheet, { 
+          header: 1, // Usa array de arrays
+          defval: '',
+          blankrows: false
+        });
+        
+        if (allData.length <= headerRow) {
+          console.log('Não há dados suficientes na planilha');
+          return { data: [], detectedRow: headerRow + 1 };
+        }
+        
+        // Pega o cabeçalho da linha detectada
+        const headers = allData[headerRow];
+        console.log('Cabeçalhos encontrados:', headers);
+        
+        // Converte as linhas de dados usando os cabeçalhos
+        const dataRows = allData.slice(headerRow + 1);
+        const jsonData = dataRows.map(row => {
+          const obj = {};
+          headers.forEach((header, index) => {
+            if (header && header.toString().trim()) {
+              obj[header.toString().trim()] = row[index] || '';
+            }
+          });
+          return obj;
+        }).filter(row => {
+          // Remove linhas completamente vazias
+          return Object.values(row).some(val => val && val.toString().trim() !== '');
+        });
+        
+        console.log(`Convertidos ${jsonData.length} registros`);
+        return { 
+          data: jsonData, 
+          detectedRow: headerRow + 1 
+        };
+        
+      } catch (error) {
+        console.error('Erro na conversão da planilha:', error);
+        showStatus(`❌ Erro ao processar planilha: ${error.message}`, true);
+        return { data: [], detectedRow: 1 };
+      }
+    }
+
     document.getElementById('basefile').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    document.getElementById('basefile-name').textContent = file.name;
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-    const data = new Uint8Array(evt.target.result);
-    const workbook = XLSX.read(data, {type: 'array'});
-    let sheetDisponivel, sheetRepasse;
-    workbook.SheetNames.forEach(name => {
-    const norm = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    if (!sheetDisponivel && norm.includes('dispon')) sheetDisponivel = workbook.Sheets[name];
-    if (!sheetRepasse && norm.includes('repasse')) sheetRepasse = workbook.Sheets[name];
-    });
-    if (!sheetDisponivel) sheetDisponivel = workbook.Sheets[workbook.SheetNames[0]];
-    if (!sheetRepasse) sheetRepasse = workbook.Sheets[workbook.SheetNames[1]];
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      document.getElementById('basefile-name').textContent = file.name;
+      showStatus('📊 Processando arquivo Excel...');
+      
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, {type: 'array'});
+          
+          console.log('Planilhas encontradas:', workbook.SheetNames);
+          
+          let sheetDisponivel, sheetRepasse;
+          
+          // Procura pelas planilhas por nome
+          workbook.SheetNames.forEach(name => {
+            const norm = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            console.log(`Analisando planilha: ${name} (normalizado: ${norm})`);
+            
+            if (!sheetDisponivel && (norm.includes('dispon') || norm.includes('estoque'))) {
+              sheetDisponivel = workbook.Sheets[name];
+              console.log(`Planilha disponível encontrada: ${name}`);
+            }
+            if (!sheetRepasse && norm.includes('repasse')) {
+              sheetRepasse = workbook.Sheets[name];
+              console.log(`Planilha repasse encontrada: ${name}`);
+            }
+          });
+          
+          // Se não encontrou por nome, usa as primeiras planilhas
+          if (!sheetDisponivel) {
+            sheetDisponivel = workbook.Sheets[workbook.SheetNames[0]];
+            console.log(`Usando primeira planilha como disponível: ${workbook.SheetNames[0]}`);
+          }
+          if (!sheetRepasse && workbook.SheetNames.length > 1) {
+            sheetRepasse = workbook.Sheets[workbook.SheetNames[1]];
+            console.log(`Usando segunda planilha como repasse: ${workbook.SheetNames[1]}`);
+          }
+          
+          // Se só há uma planilha, usa ela para ambos
+          if (!sheetRepasse) {
+            sheetRepasse = sheetDisponivel;
+            console.log('Usando mesma planilha para ambas as abas');
+          }
 
-    function mapRow(row) {
-    return {
-    patio: row[findCol(row, ['patio','pátio'])] || '',
-    modelo: row[findCol(row, ['modelo','nome do modelo'])] || '',
-    dias: Number(row[findCol(row, ['dpt','dias','dias estoque','dias em estoque'])] || 0),
-    ano: row[findCol(row, ['ano/m','ano','ano modelo'])] || '',
-    cor: row[findCol(row, ['cor externa','cor'])] || '',
-    preco: Number(row[findCol(row, ['preco venda','preço venda','preco','preço'])] || 0),
-    placa: row[findCol(row, ['placa'])] || '',
-    km: row[findCol(row, ['km','quilometragem'])] || '',
-    descricao: row[findCol(row, ['descricao situacao','descrição situação','situacao','situação'])] || '',
-    custo: Number(row[findCol(row, ['total nota fabrica','nota fabrica','custo','valor de custo'])] || 0)
-    }
-    }
-    dadosDisponivel = XLSX.utils.sheet_to_json(sheetDisponivel, {defval: ''}).map(mapRow);
-    dadosRepasse = XLSX.utils.sheet_to_json(sheetRepasse, {defval: ''}).map(mapRow);
+          function mapRow(row) {
+            return {
+              patio: row[findCol(row, ['patio','pátio'])] || '',
+              modelo: row[findCol(row, ['modelo','nome do modelo'])] || '',
+              dias: Number(row[findCol(row, ['dpt','dias','dias estoque','dias em estoque'])] || 0),
+              ano: row[findCol(row, ['ano/m','ano','ano modelo'])] || '',
+              cor: row[findCol(row, ['cor externa','cor'])] || '',
+              preco: Number(row[findCol(row, ['preco venda','preço venda','preco','preço'])] || 0),
+              placa: row[findCol(row, ['placa'])] || '',
+              km: row[findCol(row, ['km','quilometragem'])] || '',
+              descricao: row[findCol(row, ['descricao situacao','descrição situação','situacao','situação'])] || '',
+              custo: Number(row[findCol(row, ['total nota fabrica','nota fabrica','custo','valor de custo'])] || 0)
+            }
+          }
 
-    // Multi-selects
-    updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), filtroDisponivel.patio, v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
-    updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), filtroDisponivel.modelo, v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
-    updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), filtroRepasse.patio, v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
-    updateMultiSelect('multiselect-patio-total', getPatiosTotal(), filtroTotal.patio, v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
-    updateMultiSelect('multiselect-modelo-total', getModelosTotal(), filtroTotal.modelo, v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+          // Processa as planilhas
+          const disponivelResult = convertSheetToData(sheetDisponivel);
+          const repasseResult = convertSheetToData(sheetRepasse);
+          
+          dadosDisponivel = disponivelResult.data.map(mapRow);
+          dadosRepasse = repasseResult.data.map(mapRow);
+          
+          console.log(`Dados processados - Disponível: ${dadosDisponivel.length}, Repasse: ${dadosRepasse.length}`);
 
-    preencherTabela('disponivel');
-    preencherTabela('repasse');
-    preencherResumoTotal();
-    preencherGraficosTotal();
-    };
-    reader.readAsArrayBuffer(file);
+          // Mostra informação sobre a detecção
+          const totalRegistros = dadosDisponivel.length + dadosRepasse.length;
+          if (totalRegistros > 0) {
+            showStatus(`
+              ✅ Dados carregados com sucesso!<br>
+              • Planilha "Disponível": ${dadosDisponivel.length} registros (linha ${disponivelResult.detectedRow})<br>
+              • Planilha "Repasse": ${dadosRepasse.length} registros (linha ${repasseResult.detectedRow})<br>
+              • Total: ${totalRegistros} registros processados
+            `);
+          } else {
+            showStatus('⚠️ Nenhum dado foi encontrado nas planilhas. Verifique se o arquivo está correto.', true);
+            return;
+          }
+
+          // Atualiza os multi-selects
+          updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), filtroDisponivel.patio, v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
+          updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), filtroDisponivel.modelo, v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+          updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), filtroRepasse.patio, v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
+          updateMultiSelect('multiselect-patio-total', getPatiosTotal(), filtroTotal.patio, v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
+          updateMultiSelect('multiselect-modelo-total', getModelosTotal(), filtroTotal.modelo, v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+
+          // Atualiza as tabelas e gráficos
+          preencherTabela('disponivel');
+          preencherTabela('repasse');
+          preencherResumoTotal();
+          preencherGraficosTotal();
+          
+        } catch (error) {
+          console.error('Erro ao processar arquivo:', error);
+          showStatus(`❌ Erro ao processar arquivo: ${error.message}`, true);
+        }
+      };
+      
+      reader.onerror = function() {
+        showStatus('❌ Erro ao ler o arquivo. Verifique se é um arquivo Excel válido.', true);
+      };
+      
+      reader.readAsArrayBuffer(file);
     });
 
     // Inicialização dos multi-selects vazios
     document.addEventListener('DOMContentLoaded', function() {
-    updateMultiSelect('multiselect-patio-disponivel', [], [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
-    updateMultiSelect('multiselect-modelo-disponivel', [], [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
-    updateMultiSelect('multiselect-patio-repasse', [], [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
-    updateMultiSelect('multiselect-patio-total', [], [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
-    updateMultiSelect('multiselect-modelo-total', [], [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+      updateMultiSelect('multiselect-patio-disponivel', [], [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
+      updateMultiSelect('multiselect-modelo-disponivel', [], [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+      updateMultiSelect('multiselect-patio-repasse', [], [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
+      updateMultiSelect('multiselect-patio-total', [], [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
+      updateMultiSelect('multiselect-modelo-total', [], [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
     });
   </script>
 </body>
 </html>
+
