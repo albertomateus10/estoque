@@ -214,7 +214,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab(0)">Estoque Disponível</button>
   
-    <div class="credit">Desenvolvido por Alberto Mateus.</div>
+    <div class="credit">Desenvolvido por Alberto Mateus para o Grupo San Marino.</div>
   </div>
 
   <!-- Aba 1: Estoque Disponível -->
@@ -264,6 +264,11 @@
     <input type="text" id="search-disponivel" placeholder="Buscar modelo, placa, cor...">
     <div class="multiselect" id="multiselect-patio-disponivel"></div>
     <div class="multiselect" id="multiselect-modelo-disponivel"></div>
+    <select id="filtro-proposta-disponivel" style="padding: 6px 10px; margin-right: 10px; border: 1px solid #aaa; border-radius: 6px; background: #fff;">
+      <option value="">Proposta: Todos</option>
+      <option value="sim">Proposta: Sim</option>
+      <option value="nao">Proposta: Não</option>
+    </select>
     <button onclick="resetFilters('disponivel')">Limpar Filtros</button>
     </div>
     <div class="charts">
@@ -283,6 +288,7 @@
     <table id="tabela-disponivel">
     <thead>
     <tr>
+    <th data-col="proposta">Proposta <span class="sort-arrow"></span></th>
     <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
     <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
     <th data-col="dias">Dias <span class="sort-arrow"></span></th>
@@ -327,11 +333,17 @@
     <div class="filters">
     <input type="text" id="search-repasse" placeholder="Buscar modelo, placa, cor...">
     <div class="multiselect" id="multiselect-patio-repasse"></div>
+    <select id="filtro-proposta-repasse" style="padding: 6px 10px; margin-right: 10px; border: 1px solid #aaa; border-radius: 6px; background: #fff;">
+      <option value="">Proposta: Todos</option>
+      <option value="sim">Proposta: Sim</option>
+      <option value="nao">Proposta: Não</option>
+    </select>
     <button onclick="resetFilters('repasse')">Limpar Filtros</button>
     </div>
     <table id="tabela-repasse">
     <thead>
     <tr>
+    <th data-col="proposta">Proposta <span class="sort-arrow"></span></th>
     <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
     <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
     <th data-col="dias">Dias <span class="sort-arrow"></span></th>
@@ -385,6 +397,11 @@
     <input type="text" id="search-total" placeholder="Buscar modelo, placa, cor...">
     <div class="multiselect" id="multiselect-patio-total"></div>
     <div class="multiselect" id="multiselect-modelo-total"></div>
+    <select id="filtro-proposta-total" style="padding: 6px 10px; margin-right: 10px; border: 1px solid #aaa; border-radius: 6px; background: #fff;">
+      <option value="">Proposta: Todos</option>
+      <option value="sim">Proposta: Sim</option>
+      <option value="nao">Proposta: Não</option>
+    </select>
     <button onclick="resetFilters('total')">Limpar Filtros</button>
     </div>
     <div class="charts">
@@ -401,9 +418,9 @@
     let dadosDisponivel = [];
     let dadosRepasse = [];
 
-    let filtroDisponivel = { search: '', patio: [], modelo: [], dias: '' };
-    let filtroRepasse = { search: '', patio: [] };
-    let filtroTotal = { search: '', patio: [], modelo: [], dias: '' };
+    let filtroDisponivel = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
+    let filtroRepasse = { search: '', patio: [], proposta: '' };
+    let filtroTotal = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
     let sortDisponivel = { col: null, asc: true };
     let sortRepasse = { col: null, asc: true };
 
@@ -462,6 +479,11 @@
     return (anos.reduce((a, b) => a + b, 0) / anos.length).toFixed(1);
     }
 
+    function temNumeroNaProposta(proposta) {
+      if (!proposta || proposta.toString().trim() === '') return false;
+      return /\d/.test(proposta.toString());
+    }
+
     function preencherTabela(tab) {
     const tbody = document.querySelector(`#tabela-${tab} tbody`);
     let dados = (tab === 'disponivel' ? dadosDisponivel : dadosRepasse).slice();
@@ -489,6 +511,13 @@
     if (faixa === '91+') return item.dias >= 91;
     });
     }
+    if (filtro.proposta) {
+    if (filtro.proposta === 'sim') {
+    dados = dados.filter(item => temNumeroNaProposta(item.proposta));
+    } else if (filtro.proposta === 'nao') {
+    dados = dados.filter(item => !temNumeroNaProposta(item.proposta));
+    }
+    }
     let sort = (tab === 'disponivel' ? sortDisponivel : sortRepasse);
     if (sort.col) {
     dados.sort((a, b) => {
@@ -508,6 +537,7 @@
     totalDias += Number(item.dias);
     tbody.innerHTML += `
     <tr>
+    <td>${item.proposta||''}</td>
     <td>${item.patio||''}</td>
     <td>${item.modelo||''}</td>
     <td>${item.dias||''}</td>
@@ -571,6 +601,13 @@
     if (faixa === '91+') return item.dias >= 91;
     });
     }
+    if (filtroTotal.proposta) {
+    if (filtroTotal.proposta === 'sim') {
+    dados = dados.filter(item => temNumeroNaProposta(item.proposta));
+    } else if (filtroTotal.proposta === 'nao') {
+    dados = dados.filter(item => !temNumeroNaProposta(item.proposta));
+    }
+    }
     const totalQtd = dados.length;
     const totalCusto = dados.reduce((a,b)=>a+Number(b.custo),0);
     const totalPreco = dados.reduce((a,b)=>a+Number(b.preco),0);
@@ -609,6 +646,13 @@
     if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
     if (faixa === '91+') return item.dias >= 91;
     });
+    }
+    if (filtroTotal.proposta) {
+    if (filtroTotal.proposta === 'sim') {
+    dados = dados.filter(item => temNumeroNaProposta(item.proposta));
+    } else if (filtroTotal.proposta === 'nao') {
+    dados = dados.filter(item => !temNumeroNaProposta(item.proposta));
+    }
     }
     preencherGraficos('pie-modelos-total', 'bar-dias-total', dados, true);
     }
@@ -716,90 +760,123 @@
     const lojasOrdenadas = Object.entries(contagem)
     .sort((a, b) => b[1] - a[1])
     .map(x => x[0]);
-    const quantidades = lojasOrdenadas.map(loja => contagem[loja]);
-    if (window.barLojasDisponivelChart) window.barLojasDisponivelChart.destroy();
-    window.barLojasDisponivelChart = new Chart(document.getElementById('bar-lojas'), {
-    type: 'bar',
-    data: {
+    const valoresOrdenados = lojasOrdenadas.map(loja => contagem[loja]);
+    const barLojasData = {
     labels: lojasOrdenadas,
     datasets: [{
-    label: 'Estoque por Loja',
-    data: quantidades,
-    backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a','#8854d0','#20bf6b','#fd9644','#a55eea','#778ca3','#e17055']
+    label: 'Qtd. de carros',
+    data: valoresOrdenados,
+    backgroundColor: '#7ed6b5'
     }]
-    },
+    };
+    if (window['bar-lojasChart']) window['bar-lojasChart'].destroy();
+    window['bar-lojasChart'] = new Chart(document.getElementById('bar-lojas'), {
+    type: 'bar',
+    data: barLojasData,
     options: {
-    plugins: { legend: { display: false } },
-    indexAxis: 'x',
-    scales: {
-    x: { title: { display: false }, grid: { display: false } },
-    y: { title: { display: false }, beginAtZero: true, ticks: { stepSize: 1, precision: 0 } }
-    },
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    plugins: {
+    legend: { display: false },
+    tooltip: { enabled: true }
+    },
+    scales: {
+    x: { title: { display: true, text: 'Lojas' } },
+    y: { title: { display: true, text: 'Quantidade de veículos' }, beginAtZero: true }
+    },
+    onClick: (evt, elements) => {
+    if (elements.length) {
+    const idx = elements[0].index;
+    filtroDisponivel.patio = [barLojasData.labels[idx]];
+    updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), filtroDisponivel.patio, v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
+    preencherTabela('disponivel');
+    }
+    }
     }
     });
     }
 
     function resetFilters(tab) {
-    if (tab === 'repasse') {
-    filtroRepasse = { search: '', patio: [] };
-    document.getElementById('search-repasse').value = '';
-    updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
-    preencherTabela('repasse');
-    } else if (tab === 'disponivel') {
-    filtroDisponivel = { search: '', patio: [], modelo: [], dias: '' };
+    if (tab === 'disponivel') {
+    filtroDisponivel = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
     document.getElementById('search-disponivel').value = '';
+    document.getElementById('filtro-proposta-disponivel').value = '';
     updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
     updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
     preencherTabela('disponivel');
+    } else if (tab === 'repasse') {
+    filtroRepasse = { search: '', patio: [], proposta: '' };
+    document.getElementById('search-repasse').value = '';
+    document.getElementById('filtro-proposta-repasse').value = '';
+    updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
+    preencherTabela('repasse');
     } else if (tab === 'total') {
-    filtroTotal = { search: '', patio: [], modelo: [], dias: '' };
+    filtroTotal = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
     document.getElementById('search-total').value = '';
+    document.getElementById('filtro-proposta-total').value = '';
     updateMultiSelect('multiselect-patio-total', getPatiosTotal(), [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
     updateMultiSelect('multiselect-modelo-total', getModelosTotal(), [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
     preencherResumoTotal();
     preencherGraficosTotal();
     }
     }
-    document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('search-repasse').addEventListener('input', e => {
-    filtroRepasse.search = e.target.value;
-    preencherTabela('repasse');
-    });
+
+    // Event listeners para busca
     document.getElementById('search-disponivel').addEventListener('input', e => {
     filtroDisponivel.search = e.target.value;
     preencherTabela('disponivel');
+    });
+    document.getElementById('search-repasse').addEventListener('input', e => {
+    filtroRepasse.search = e.target.value;
+    preencherTabela('repasse');
     });
     document.getElementById('search-total').addEventListener('input', e => {
     filtroTotal.search = e.target.value;
     preencherResumoTotal();
     preencherGraficosTotal();
     });
-    document.querySelectorAll('#tabela-repasse th').forEach(th => {
-    th.addEventListener('click', function() {
-    const col = th.getAttribute('data-col');
-    if (!col) return;
-    if (sortRepasse.col === col) sortRepasse.asc = !sortRepasse.asc;
-    else { sortRepasse.col = col; sortRepasse.asc = true; }
-    atualizarSetas('repasse', sortRepasse);
+
+    // Event listeners para filtros de proposta
+    document.getElementById('filtro-proposta-disponivel').addEventListener('change', e => {
+    filtroDisponivel.proposta = e.target.value;
+    preencherTabela('disponivel');
+    });
+    document.getElementById('filtro-proposta-repasse').addEventListener('change', e => {
+    filtroRepasse.proposta = e.target.value;
     preencherTabela('repasse');
     });
+    document.getElementById('filtro-proposta-total').addEventListener('change', e => {
+    filtroTotal.proposta = e.target.value;
+    preencherResumoTotal();
+    preencherGraficosTotal();
     });
+
+    // Event listeners para ordenação
     document.querySelectorAll('#tabela-disponivel th').forEach(th => {
-    th.addEventListener('click', function() {
+    th.addEventListener('click', () => {
     const col = th.getAttribute('data-col');
-    if (!col) return;
-    if (sortDisponivel.col === col) sortDisponivel.asc = !sortDisponivel.asc;
-    else { sortDisponivel.col = col; sortDisponivel.asc = true; }
+    if (sortDisponivel.col === col) {
+    sortDisponivel.asc = !sortDisponivel.asc;
+    } else {
+    sortDisponivel.col = col;
+    sortDisponivel.asc = true;
+    }
     atualizarSetas('disponivel', sortDisponivel);
     preencherTabela('disponivel');
     });
     });
-    preencherTabela('disponivel');
+    document.querySelectorAll('#tabela-repasse th').forEach(th => {
+    th.addEventListener('click', () => {
+    const col = th.getAttribute('data-col');
+    if (sortRepasse.col === col) {
+    sortRepasse.asc = !sortRepasse.asc;
+    } else {
+    sortRepasse.col = col;
+    sortRepasse.asc = true;
+    }
+    atualizarSetas('repasse', sortRepasse);
     preencherTabela('repasse');
-    preencherResumoTotal();
-    preencherGraficosTotal();
+    });
     });
     function atualizarSetas(tab, sort) {
     const ths = document.querySelectorAll(`#tabela-${tab} th`);
@@ -888,7 +965,7 @@
           'modelo', 'patio', 'pátio', 'placa', 'dias', 'ano', 'cor', 
           'preco', 'preço', 'km', 'custo', 'fabrica', 'fábrica',
           'situacao', 'situação', 'descricao', 'descrição', 'venda',
-          'estoque', 'quilometragem', 'nota'
+          'estoque', 'quilometragem', 'nota', 'proposta'
         ];
         
         let bestRow = 0;
@@ -1059,6 +1136,7 @@
 
           function mapRow(row) {
             return {
+              proposta: row[findCol(row, ['proposta'])] || row[Object.keys(row)[0]] || '', // Coluna A como fallback
               patio: row[findCol(row, ['patio','pátio'])] || '',
               modelo: row[findCol(row, ['modelo','nome do modelo'])] || '',
               dias: Number(row[findCol(row, ['dpt','dias','dias estoque','dias em estoque'])] || 0),
