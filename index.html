@@ -7,90 +7,49 @@
     body { font-family: Arial, sans-serif; margin: 30px; background: #f7f7f7; }
     h1 { color: #2c3e50; }
     .header-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
     }
     .base-upload {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1.1em;
-    background: #fff;
-    padding: 3px 8px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px #0001;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1em;
+      background: #fff;
+      padding: 3px 8px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px #0001;
     }
-    .base-upload label {
-    font-weight: bold;
-    color: #2980b9;
-    margin-right: 3px;
-    }
-    .base-upload input[type="file"] {
-    display: none;
-    }
+    .base-upload label { font-weight: bold; color: #2980b9; margin-right: 3px; }
+    .base-upload input[type="file"] { display: none; }
     .base-upload .file-btn {
-    background: #7ed6b5;
-    color: #23272f;
-    border: none;
-    border-radius: 6px;
-    padding: 3px 7px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
+      background: #7ed6b5; color: #23272f; border: none; border-radius: 6px;
+      padding: 3px 7px; font-weight: bold; cursor: pointer; transition: background 0.2s;
     }
-    .base-upload .file-btn:hover {
-    background: #5a8ac6;
-    color: #fff;
-    }
+    .base-upload .file-btn:hover { background: #5a8ac6; color: #fff; }
     .base-upload .file-name {
-    font-size: 0.98em;
-    color: #555;
-    margin-left: 5px;
-    max-width: 80px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+      font-size: 0.98em; color: #555; margin-left: 5px; max-width: 180px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
+
     .tabs {
-    position: relative;
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-    background: #23272f;
-    padding: 24px 0 0 24px;
-    border-radius: 0 0 12px 12px;
-    border-bottom: 4px solid #7ed6b5;
-    box-shadow: 0 2px 8px #0002;
+      position: relative; display: flex; gap: 20px; margin-bottom: 20px;
+      background: #23272f; padding: 24px 0 0 24px; border-radius: 0 0 12px 12px;
+      border-bottom: 4px solid #7ed6b5; box-shadow: 0 2px 8px #0002;
     }
     .tab-btn {
-    padding: 18px 40px 16px 40px;
-    background: #374151;
-    border: none;
-    border-radius: 12px 12px 0 0;
-    font-weight: bold;
-    cursor: pointer;
-    color: #fff;
-    font-size: 1.3em;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    margin-bottom: -4px;
-    box-shadow: 0 2px 8px #0001;
-    outline: none;
-    position: relative;
+      padding: 18px 40px 16px; background: #374151; border: none; border-radius: 12px 12px 0 0;
+      font-weight: bold; cursor: pointer; color: #fff; font-size: 1.3em;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s; margin-bottom: -4px;
+      box-shadow: 0 2px 8px #0001; outline: none; position: relative;
     }
-    .tab-btn.active {
-    background: #7ed6b5;
-    color: #23272f;
-    box-shadow: 0 6px 18px #0002;
-    z-index: 2;
-    }
-    .tab-btn:not(.active):hover {
-    background: #42506a;
-    color: #fff;
-    }
+    .tab-btn.active { background: #7ed6b5; color: #23272f; box-shadow: 0 6px 18px #0002; z-index: 2; }
+    .tab-btn:not(.active):hover { background: #42506a; color: #fff; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+
     .summary { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
     .summary-box { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 12px 18px; min-width: 170px; }
     .summary-box strong { font-size: 1.3em; color: #2980b9; }
@@ -98,101 +57,48 @@
     .summary-box.margem strong { color: #fff; }
     .summary-box.km { background: #f7b731; color: #23272f; }
     .summary-box.km strong { color: #23272f; }
+
     .filters { margin-bottom: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
     .filters input { margin-right: 10px; padding: 5px 8px; }
+
     table { width: 100%; border-collapse: collapse; background: #fff; }
     th, td { border: 1px solid #ddd; padding: 8px 6px; text-align: left; }
     th { background: #2980b9; color: #fff; cursor: pointer; user-select: none; }
     tr:nth-child(even) { background: #f2f2f2; }
     tr:hover { background: #eaf6ff; }
     .sort-arrow { font-size: 0.9em; margin-left: 3px; }
+
     .charts { display: flex; gap: 30px; margin: 30px 0; flex-wrap: wrap; }
     .chart-container { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 20px; flex: 1 1 350px; min-width: 320px; max-width: 480px; }
     canvas { max-width: 420px !important; max-height: 320px !important; }
+
     @media (max-width: 900px) {
-    .charts { flex-direction: column; gap: 20px; }
-    .chart-container { max-width: 100%; }
-    .header-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .charts { flex-direction: column; gap: 20px; }
+      .chart-container { max-width: 100%; }
+      .header-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
-    /* Multi-select styles */
-    .multiselect {
-    position: relative;
-    display: inline-block;
-    min-width: 180px;
-    margin-right: 10px;
-    }
+
+    /* Multi-select */
+    .multiselect { position: relative; display: inline-block; min-width: 180px; margin-right: 10px; }
     .multiselect .selectBox {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    border: 1px solid #aaa;
-    border-radius: 6px;
-    padding: 6px 10px;
-    cursor: pointer;
-    min-width: 160px;
-    user-select: none;
+      display: flex; align-items: center; background: #fff; border: 1px solid #aaa; border-radius: 6px;
+      padding: 6px 10px; cursor: pointer; min-width: 160px; user-select: none;
     }
-    .multiselect .selectBox:after {
-    content: "▼";
-    font-size: 0.8em;
-    margin-left: auto;
-    color: #2980b9;
-    }
+    .multiselect .selectBox:after { content: "▼"; font-size: 0.8em; margin-left: auto; color: #2980b9; }
     .multiselect .checkboxes {
-    display: none;
-    position: absolute;
-    background: #fff;
-    border: 1px solid #aaa;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px #0002;
-    z-index: 10;
-    max-height: 220px;
-    overflow-y: auto;
-    min-width: 180px;
-    margin-top: 2px;
+      display: none; position: absolute; background: #fff; border: 1px solid #aaa; border-radius: 6px;
+      box-shadow: 0 2px 8px #0002; z-index: 10; max-height: 220px; overflow-y: auto; min-width: 180px; margin-top: 2px;
     }
-    .multiselect.active .checkboxes {
-    display: block;
-    }
-    .multiselect label {
-    display: block;
-    padding: 4px 10px;
-    cursor: pointer;
-    font-size: 1em;
-    }
-    .multiselect label:hover {
-    background: #f2f2f2;
-    }
-  
-    .credit {
-    position: absolute;
-    bottom: 6px;
-    right: 20px;
-    color: #ffff;
-    font-size: 0.75em;
-    pointer-events: none;
-    }
+    .multiselect.active .checkboxes { display: block; }
+    .multiselect label { display: block; padding: 4px 10px; cursor: pointer; font-size: 1em; }
+    .multiselect label:hover { background: #f2f2f2; }
+
+    .credit { position: absolute; bottom: 6px; right: 20px; color: #ffff; font-size: 0.75em; pointer-events: none; }
 
     /* Indicadores de status */
-    .status-info {
-    border-radius: 4px;
-    padding: 8px 12px;
-    margin: 10px 0;
-    font-size: 0.9em;
-    }
-    
-    .status-success {
-    background: #e8f5e8;
-    border: 1px solid #4caf50;
-    color: #2e7d32;
-    }
-    
-    .status-error {
-    background: #ffebee;
-    border: 1px solid #f44336;
-    color: #c62828;
-    }
-
+    .status-info { border-radius: 4px; padding: 8px 12px; margin: 10px 0; font-size: 0.9em; }
+    .status-success { background: #e8f5e8; border: 1px solid #4caf50; color: #2e7d32; }
+    .status-error { background: #ffebee; border: 1px solid #f44336; color: #c62828; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -201,107 +107,77 @@
   <div class="header-bar">
     <div></div>
     <div class="base-upload">
-    <label for="basefile">Base:</label>
-    <button class="file-btn" onclick="document.getElementById('basefile').click()">Selecionar Excel</button>
-    <input type="file" id="basefile" accept=".xlsx,.xls" />
-    <span class="file-name" id="basefile-name"></span>
+      <label for="basefile">Base:</label>
+      <button class="file-btn" onclick="document.getElementById('basefile').click()">Selecionar Excel</button>
+      <input type="file" id="basefile" accept=".xlsx,.xls" />
+      <span class="file-name" id="basefile-name"></span>
     </div>
   </div>
-  
+
   <!-- Indicador de status -->
   <div id="status-info" class="status-info" style="display: none;"></div>
-  
+
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab(0)">Estoque Disponível</button>
-  
     <div class="credit">Desenvolvido por Alberto Mateus para o Grupo San Marino.</div>
   </div>
 
   <!-- Aba 1: Estoque Disponível -->
   <div class="tab-content active" id="tab-disponivel">
     <div class="summary">
-    <div class="summary-box">
-    <div>Quantidade de veículos</div>
-    <strong id="qtd-disponivel">0</strong>
-    </div>  <div class="summary-box">
-    <div>Média dos Dias de Estoque</div>
-    <strong id="media-dias-disponivel">0</strong>
+      <div class="summary-box"><div>Quantidade de veículos</div><strong id="qtd-disponivel">0</strong></div>
+      <div class="summary-box"><div>Média dos Dias de Estoque</div><strong id="media-dias-disponivel">0</strong></div>
+      <div class="summary-box km"><div>KM média dos Veículos</div><strong id="media-km-disponivel">0</strong></div>
+      <div class="summary-box"><div>Média dos Anos dos Veículos</div><strong id="media-ano-disponivel">0</strong></div>
+      <div class="summary-box"><div>Valor Médio do Estoque (Custo)</div><strong id="media-custo-disponivel">R$ 0,00</strong></div>
+      <div class="summary-box"><div>Média do Preço de Venda</div><strong id="media-preco-venda-disponivel">R$ 0,00</strong></div>
+      <div class="summary-box"><div>Preço de Custo do estoque</div><strong id="total-custo-disponivel">R$ 0,00</strong></div>
+      <div class="summary-box"><div>Preço de Venda do estoque</div><strong id="total-preco-disponivel">R$ 0,00</strong></div>
+      <div class="summary-box margem"><div>Margem Bruta Somada</div><strong id="margem-bruta-disponivel">R$ 0,00</strong></div>
+      <div class="summary-box margem"><div>% da Margem Bruta</div><strong id="margem-percent-disponivel">0%</strong></div>
     </div>
-    <div class="summary-box km">
-    <div>KM média dos Veículos</div>
-    <strong id="media-km-disponivel">0</strong>
-    </div>
-    <div class="summary-box">
-    <div>Média dos Anos dos Veículos</div>
-    <strong id="media-ano-disponivel">0</strong>
-    </div>
-    <div class="summary-box">
-    <div>Valor Médio do Estoque (Custo)</div>
-    <strong id="media-custo-disponivel">R$ 0,00</strong>
-    </div>
-    <div class="summary-box">
-    <div>Média do Preço de Venda</div>
-    <strong id="media-preco-venda-disponivel">R$ 0,00</strong>
-    </div>
-    <div class="summary-box">
-    <div>Preço de Custo do estoque</div>
-    <strong id="total-custo-disponivel">R$ 0,00</strong>
-    </div>
-    <div class="summary-box">
-    <div>Preço de Venda do estoque</div>
-    <strong id="total-preco-disponivel">R$ 0,00</strong>
-    </div>
-    <div class="summary-box margem">
-    <div>Margem Bruta Somada</div>
-    <strong id="margem-bruta-disponivel">R$ 0,00</strong>
-    </div>
-    <div class="summary-box margem">
-    <div>% da Margem Bruta</div>
-    <strong id="margem-percent-disponivel">0%</strong>
-    </div>
-    </div>
+
     <div class="filters">
-    <input type="text" id="search-disponivel" placeholder="Buscar modelo, placa, cor...">
-    <div class="multiselect" id="multiselect-patio-disponivel"></div>
-    <div class="multiselect" id="multiselect-modelo-disponivel"></div>
-    <select id="filtro-proposta-disponivel" style="padding: 6px 10px; margin-right: 10px; border: 1px solid #aaa; border-radius: 6px; background: #fff;">
-      <option value="">Proposta: Todos</option>
-      <option value="sim">Proposta: Sim</option>
-      <option value="nao">Proposta: Não</option>
-    </select>
-    <button onclick="resetFilters('disponivel')">Limpar Filtros</button>
+      <input type="text" id="search-disponivel" placeholder="Buscar modelo, placa, cor...">
+      <div class="multiselect" id="multiselect-proposta-disponivel"></div>
+      <div class="multiselect" id="multiselect-patio-disponivel"></div>
+      <div class="multiselect" id="multiselect-modelo-disponivel"></div>
+      <div class="multiselect" id="multiselect-descricao-disponivel"></div>
+      <button onclick="resetFilters('disponivel')">Limpar Filtros</button>
     </div>
+
     <div class="charts">
-    <div class="chart-container">
-    <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Top 5 Modelos em Estoque</div>
-    <canvas id="pie-modelos"></canvas>
+      <div class="chart-container">
+        <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Top 5 Modelos em Estoque</div>
+        <canvas id="pie-modelos"></canvas>
+      </div>
+      <div class="chart-container">
+        <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Quantidade / Dias em Estoque</div>
+        <canvas id="bar-dias"></canvas>
+      </div>
+      <div class="chart-container">
+        <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Estoque por Loja</div>
+        <canvas id="bar-lojas"></canvas>
+      </div>
     </div>
-    <div class="chart-container">
-    <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Quantidade / Dias em Estoque</div>
-    <canvas id="bar-dias"></canvas>
-    </div>
-    <div class="chart-container">
-    <div style="text-align:center; color:#2980b9; font-weight:bold; font-size:1.15em; margin-bottom:6px;">Estoque por Loja</div>
-    <canvas id="bar-lojas"></canvas>
-    </div>
-    </div>
+
     <table id="tabela-disponivel">
-    <thead>
-    <tr>
-    <th data-col="proposta">Proposta <span class="sort-arrow"></span></th>
-    <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
-    <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
-    <th data-col="dias">Dias <span class="sort-arrow"></span></th>
-    <th data-col="ano">Ano <span class="sort-arrow"></span></th>
-    <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
-    <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
-    <th data-col="placa">Placa <span class="sort-arrow"></span></th>
-    <th data-col="km">KM <span class="sort-arrow"></span></th>
-    <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
-    <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
-    </tr>
-    </thead>
-    <tbody></tbody>
+      <thead>
+        <tr>
+          <th data-col="proposta">Proposta <span class="sort-arrow"></span></th>
+          <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
+          <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
+          <th data-col="dias">Dias <span class="sort-arrow"></span></th>
+          <th data-col="ano">Ano <span class="sort-arrow"></span></th>
+          <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
+          <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
+          <th data-col="placa">Placa <span class="sort-arrow"></span></th>
+          <th data-col="km">KM <span class="sort-arrow"></span></th>
+          <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
+          <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
   </div>
 
@@ -309,54 +185,38 @@
   <div class="tab-content" id="tab-repasse">
     <h1>REPASSSES NÃO VENDIDOS</h1>
     <div class="summary">
-    <div class="summary-box">
-    <div>Quantidade de carros</div>
-    <strong id="qtd-repasse">0</strong>
+      <div class="summary-box"><div>Quantidade de carros</div><strong id="qtd-repasse">0</strong></div>
+      <div class="summary-box"><div>Média de dias de estoque</div><strong id="media-dias-repasse">0</strong></div>
+      <div class="summary-box km"><div>KM média dos carros</div><strong id="media-km-repasse">0</strong></div>
+      <div class="summary-box"><div>Valor total de custo</div><strong id="total-custo-repasse">R$ 0,00</strong></div>
+      <div class="summary-box"><div>Média por veículo</div><strong id="media-veiculo-repasse">R$ 0,00</strong></div>
     </div>
-    <div class="summary-box">
-    <div>Média de dias de estoque</div>
-    <strong id="media-dias-repasse">0</strong>
-    </div>
-    <div class="summary-box km">
-    <div>KM média dos carros</div>
-    <strong id="media-km-repasse">0</strong>
-    </div>
-    <div class="summary-box">
-    <div>Valor total de custo</div>
-    <strong id="total-custo-repasse">R$ 0,00</strong>
-    </div>
-    <div class="summary-box">
-    <div>Média por veículo</div>
-    <strong id="media-veiculo-repasse">R$ 0,00</strong>
-    </div>
-    </div>
+
     <div class="filters">
-    <input type="text" id="search-repasse" placeholder="Buscar modelo, placa, cor...">
-    <div class="multiselect" id="multiselect-patio-repasse"></div>
-    <select id="filtro-proposta-repasse" style="padding: 6px 10px; margin-right: 10px; border: 1px solid #aaa; border-radius: 6px; background: #fff;">
-      <option value="">Proposta: Todos</option>
-      <option value="sim">Proposta: Sim</option>
-      <option value="nao">Proposta: Não</option>
-    </select>
-    <button onclick="resetFilters('repasse')">Limpar Filtros</button>
+      <input type="text" id="search-repasse" placeholder="Buscar modelo, placa, cor...">
+      <div class="multiselect" id="multiselect-proposta-repasse"></div>
+      <div class="multiselect" id="multiselect-patio-repasse"></div>
+      <div class="multiselect" id="multiselect-descricao-repasse"></div>
+      <button onclick="resetFilters('repasse')">Limpar Filtros</button>
     </div>
+
     <table id="tabela-repasse">
-    <thead>
-    <tr>
-    <th data-col="proposta">Proposta <span class="sort-arrow"></span></th>
-    <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
-    <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
-    <th data-col="dias">Dias <span class="sort-arrow"></span></th>
-    <th data-col="ano">Ano <span class="sort-arrow"></span></th>
-    <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
-    <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
-    <th data-col="placa">Placa <span class="sort-arrow"></span></th>
-    <th data-col="km">KM <span class="sort-arrow"></span></th>
-    <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
-    <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
-    </tr>
-    </thead>
-    <tbody></tbody>
+      <thead>
+        <tr>
+          <th data-col="proposta">Proposta <span class="sort-arrow"></span></th>
+          <th data-col="patio">Pátio <span class="sort-arrow"></span></th>
+          <th data-col="modelo">Modelo <span class="sort-arrow"></span></th>
+          <th data-col="dias">Dias <span class="sort-arrow"></span></th>
+          <th data-col="ano">Ano <span class="sort-arrow"></span></th>
+          <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
+          <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
+          <th data-col="placa">Placa <span class="sort-arrow"></span></th>
+          <th data-col="km">KM <span class="sort-arrow"></span></th>
+          <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
+          <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
   </div>
 
@@ -364,53 +224,27 @@
   <div class="tab-content" id="tab-total">
     <h1>TOTAL</h1>
     <div class="summary">
-    <div class="summary-box">
-    <div>Quantidade total de veículos</div>
-    <strong id="qtd-total">0</strong>
+      <div class="summary-box"><div>Quantidade total de veículos</div><strong id="qtd-total">0</strong></div>
+      <div class="summary-box"><div>Média Dias em Estoque</div><strong id="media-dias-total">0</strong></div>
+      <div class="summary-box km"><div>KM média dos carros</div><strong id="media-km-total">0</strong></div>
+      <div class="summary-box"><div>Soma Total Nota Fábrica</div><strong id="total-custo-total">R$ 0,00</strong></div>
+      <div class="summary-box"><div>Soma Total Preço Venda</div><strong id="total-preco-total">R$ 0,00</strong></div>
+      <div class="summary-box margem"><div>Margem Bruta Total</div><strong id="margem-bruta-total">R$ 0,00</strong></div>
+      <div class="summary-box margem"><div>% da Margem Bruta</div><strong id="margem-percent-total">0%</strong></div>
     </div>
-    <div class="summary-box">
-    <div>Média Dias em Estoque</div>
-    <strong id="media-dias-total">0</strong>
-    </div>
-    <div class="summary-box km">
-    <div>KM média dos carros</div>
-    <strong id="media-km-total">0</strong>
-    </div>
-    <div class="summary-box">
-    <div>Soma Total Nota Fábrica</div>
-    <strong id="total-custo-total">R$ 0,00</strong>
-    </div>
-    <div class="summary-box">
-    <div>Soma Total Preço Venda</div>
-    <strong id="total-preco-total">R$ 0,00</strong>
-    </div>
-    <div class="summary-box margem">
-    <div>Margem Bruta Total</div>
-    <strong id="margem-bruta-total">R$ 0,00</strong>
-    </div>
-    <div class="summary-box margem">
-    <div>% da Margem Bruta</div>
-    <strong id="margem-percent-total">0%</strong>
-    </div>
-    </div>
+
     <div class="filters">
-    <input type="text" id="search-total" placeholder="Buscar modelo, placa, cor...">
-    <div class="multiselect" id="multiselect-patio-total"></div>
-    <div class="multiselect" id="multiselect-modelo-total"></div>
-    <select id="filtro-proposta-total" style="padding: 6px 10px; margin-right: 10px; border: 1px solid #aaa; border-radius: 6px; background: #fff;">
-      <option value="">Proposta: Todos</option>
-      <option value="sim">Proposta: Sim</option>
-      <option value="nao">Proposta: Não</option>
-    </select>
-    <button onclick="resetFilters('total')">Limpar Filtros</button>
+      <input type="text" id="search-total" placeholder="Buscar modelo, placa, cor...">
+      <div class="multiselect" id="multiselect-proposta-total"></div>
+      <div class="multiselect" id="multiselect-patio-total"></div>
+      <div class="multiselect" id="multiselect-modelo-total"></div>
+      <div class="multiselect" id="multiselect-descricao-total"></div>
+      <button onclick="resetFilters('total')">Limpar Filtros</button>
     </div>
+
     <div class="charts">
-    <div class="chart-container">
-    <canvas id="pie-modelos-total"></canvas>
-    </div>
-    <div class="chart-container">
-    <canvas id="bar-dias-total"></canvas>
-    </div>
+      <div class="chart-container"><canvas id="pie-modelos-total"></canvas></div>
+      <div class="chart-container"><canvas id="bar-dias-total"></canvas></div>
     </div>
   </div>
 
@@ -418,725 +252,468 @@
     let dadosDisponivel = [];
     let dadosRepasse = [];
 
-    let filtroDisponivel = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
-    let filtroRepasse = { search: '', patio: [], proposta: '' };
-    let filtroTotal = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
+    let filtroDisponivel = { search: '', proposta: [], patio: [], modelo: [], dias: '', descricao: [] };
+    let filtroRepasse   = { search: '', proposta: [], patio: [], descricao: [] };
+    let filtroTotal     = { search: '', proposta: [], patio: [], modelo: [], dias: '', descricao: [] };
     let sortDisponivel = { col: null, asc: true };
     let sortRepasse = { col: null, asc: true };
 
-    // Função para mostrar status
+    const OPCOES_SITUACAO = ['DISPONÍVEL', 'INDISPONÍVEL'];
+    const OPCOES_PROPOSTA = ['SIM', 'NÃO'];
+
+    // Utilidades
     function showStatus(message, isError = false) {
       const statusDiv = document.getElementById('status-info');
       statusDiv.style.display = 'block';
       statusDiv.className = `status-info ${isError ? 'status-error' : 'status-success'}`;
       statusDiv.innerHTML = message;
-      
-      if (!isError) {
-        setTimeout(() => {
-          statusDiv.style.display = 'none';
-        }, 5000);
-      }
+      if (!isError) setTimeout(() => { statusDiv.style.display = 'none'; }, 5000);
     }
-
     function formatMoney(valor) {
-    return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
     function normalizeModelo(modelo) {
-    return (modelo||'').split(' ')[0].toUpperCase();
+      return (modelo||'').split(' ')[0].toUpperCase();
     }
+    function stripAccents(s) {
+      return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+    function normalizeDescricao(s) { // "DISPONIVEL" / "INDISPONIVEL"
+      return stripAccents((s||'').toUpperCase()).trim();
+    }
+
     function showTab(idx) {
-    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-    btn.classList.toggle('active', i === idx);
-    });
-    document.querySelectorAll('.tab-content').forEach((tab, i) => {
-    tab.classList.toggle('active', i === idx);
-    });
-    if(idx === 2) {
-    preencherResumoTotal();
-    preencherGraficosTotal();
-    }
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => btn.classList.toggle('active', i === idx));
+      document.querySelectorAll('.tab-content').forEach((tab, i) => tab.classList.toggle('active', i === idx));
+      if(idx === 2) { preencherResumoTotal(); preencherGraficosTotal(); }
     }
 
     function calcularMediaKm(dados) {
-    const kms = dados.map(x => Number((x.km+'').replace(/\D/g,''))).filter(x => !isNaN(x) && x > 0);
-    if (!kms.length) return '0';
-    return (kms.reduce((a,b)=>a+b,0)/kms.length).toLocaleString('pt-BR', {maximumFractionDigits:0});
+      const kms = dados.map(x => Number((x.km+'').replace(/\D/g,''))).filter(x => !isNaN(x) && x > 0);
+      if (!kms.length) return '0';
+      return (kms.reduce((a,b)=>a+b,0)/kms.length).toLocaleString('pt-BR', {maximumFractionDigits:0});
     }
-
     function calcularMediaAno(dados) {
-    const anos = dados
-    .map(x => {
-    if (!x.ano) return null;
-    // Se for "22/23", pega o segundo número
-    const partes = (x.ano + '').split('/');
-    let ano = partes.length > 1 ? partes[1] : partes[0];
-    // Converte para 4 dígitos se necessário
-    if (ano.length === 2) ano = '20' + ano;
-    return Number(ano);
-    })
-    .filter(x => !isNaN(x) && x > 1900 && x < 2100);
-    if (!anos.length) return '-';
-    return (anos.reduce((a, b) => a + b, 0) / anos.length).toFixed(1);
+      const anos = dados.map(x => {
+        if (!x.ano) return null;
+        const partes = (x.ano + '').split('/');
+        let ano = partes.length > 1 ? partes[1] : partes[0];
+        if ((ano+'').length === 2) ano = '20' + ano;
+        return Number(ano);
+      }).filter(x => !isNaN(x) && x > 1900 && x < 2100);
+      if (!anos.length) return '-';
+      return (anos.reduce((a, b) => a + b, 0) / anos.length).toFixed(1);
     }
 
-    function temNumeroNaProposta(proposta) {
-      if (!proposta || proposta.toString().trim() === '') return false;
-      return /\d/.test(proposta.toString());
-    }
-
+    // TABELAS
     function preencherTabela(tab) {
-    const tbody = document.querySelector(`#tabela-${tab} tbody`);
-    let dados = (tab === 'disponivel' ? dadosDisponivel : dadosRepasse).slice();
-    let filtro = (tab === 'disponivel' ? filtroDisponivel : filtroRepasse);
-    if (filtro.search) {
-    const s = filtro.search.toLowerCase();
-    dados = dados.filter(item =>
-    (item.modelo||'').toLowerCase().includes(s) ||
-    (item.placa||'').toLowerCase().includes(s) ||
-    (item.cor||'').toLowerCase().includes(s)
-    );
-    }
-    if (filtro.patio && filtro.patio.length) {
-    dados = dados.filter(item => filtro.patio.includes(item.patio));
-    }
-    if (tab === 'disponivel' && filtro.modelo && filtro.modelo.length) {
-    dados = dados.filter(item => filtro.modelo.includes(normalizeModelo(item.modelo)));
-    }
-    if (tab === 'disponivel' && filtro.dias) {
-    const faixa = filtro.dias;
-    dados = dados.filter(item => {
-    if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
-    if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
-    if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
-    if (faixa === '91+') return item.dias >= 91;
-    });
-    }
-    if (filtro.proposta) {
-    if (filtro.proposta === 'sim') {
-    dados = dados.filter(item => temNumeroNaProposta(item.proposta));
-    } else if (filtro.proposta === 'nao') {
-    dados = dados.filter(item => !temNumeroNaProposta(item.proposta));
-    }
-    }
-    let sort = (tab === 'disponivel' ? sortDisponivel : sortRepasse);
-    if (sort.col) {
-    dados.sort((a, b) => {
-    let vA = a[sort.col], vB = b[sort.col];
-    if (typeof vA === 'string') vA = vA.toLowerCase();
-    if (typeof vB === 'string') vB = vB.toLowerCase();
-    if (vA < vB) return sort.asc ? -1 : 1;
-    if (vA > vB) return sort.asc ? 1 : -1;
-    return 0;
-    });
-    }
-    tbody.innerHTML = '';
-    let totalCusto = 0, totalPreco = 0, totalDias = 0;
-    dados.forEach(item => {
-    totalCusto += Number(item.custo);
-    totalPreco += Number(item.preco);
-    totalDias += Number(item.dias);
-    tbody.innerHTML += `
-    <tr>
-    <td>${item.proposta||''}</td>
-    <td>${item.patio||''}</td>
-    <td>${item.modelo||''}</td>
-    <td>${item.dias||''}</td>
-    <td>${item.ano||''}</td>
-    <td>${item.cor||''}</td>
-    <td>${formatMoney(item.preco||0)}</td>
-    <td>${item.placa||''}</td>
-    <td>${item.km||''}</td>
-    <td>${item.descricao||''}</td>
-    <td>${formatMoney(item.custo||0)}</td>
-    </tr>
-    `;
-    });
-    if (tab === 'disponivel') {
-    document.getElementById('qtd-disponivel').textContent = dados.length;
-    document.getElementById('total-custo-disponivel').textContent = formatMoney(totalCusto);
-    document.getElementById('total-preco-disponivel').textContent = formatMoney(totalPreco);
-    document.getElementById('media-dias-disponivel').textContent = (totalDias / (dados.length || 1)).toFixed(2);
-    const margemBrutaDisp = totalPreco - totalCusto;
-    document.getElementById('margem-bruta-disponivel').textContent = formatMoney(margemBrutaDisp);
-    const percentDisp = totalPreco > 0 ? ((margemBrutaDisp / totalPreco) * 100).toFixed(2) : '0.00';
-    document.getElementById('margem-percent-disponivel').textContent = percentDisp + '%';
-    document.getElementById('media-km-disponivel').textContent = calcularMediaKm(dados);
-    document.getElementById('media-ano-disponivel').textContent = calcularMediaAno(dados);
-    // NOVO: valor médio do estoque (custo)
-    document.getElementById('media-custo-disponivel').textContent = dados.length ? formatMoney(totalCusto/dados.length) : 'R$ 0,00';
-    // NOVO: média do preço de venda
-    document.getElementById('media-preco-venda-disponivel').textContent = dados.length ? formatMoney(totalPreco/dados.length) : 'R$ 0,00';
-    preencherGraficos('pie-modelos', 'bar-dias', dados);
-    atualizarBarraLojasDisponivel(dados);
-    } else {
-    document.getElementById('qtd-repasse').textContent = dados.length;
-    document.getElementById('total-custo-repasse').textContent = formatMoney(totalCusto);
-    document.getElementById('media-veiculo-repasse').textContent = formatMoney(totalCusto / (dados.length || 1));
-    document.getElementById('media-dias-repasse').textContent = (totalDias / (dados.length || 1)).toFixed(1);
-    document.getElementById('media-km-repasse').textContent = calcularMediaKm(dados);
-    }
-    }
-    function preencherResumoTotal() {
-    let dados = [...dadosDisponivel, ...dadosRepasse];
-    if (filtroTotal.search) {
-    const s = filtroTotal.search.toLowerCase();
-    dados = dados.filter(item =>
-    (item.modelo||'').toLowerCase().includes(s) ||
-    (item.placa||'').toLowerCase().includes(s) ||
-    (item.cor||'').toLowerCase().includes(s)
-    );
-    }
-    if (filtroTotal.patio && filtroTotal.patio.length) {
-    dados = dados.filter(item => filtroTotal.patio.includes(item.patio));
-    }
-    if (filtroTotal.modelo && filtroTotal.modelo.length) {
-    dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo)));
-    }
-    if (filtroTotal.dias) {
-    const faixa = filtroTotal.dias;
-    dados = dados.filter(item => {
-    if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
-    if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
-    if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
-    if (faixa === '91+') return item.dias >= 91;
-    });
-    }
-    if (filtroTotal.proposta) {
-    if (filtroTotal.proposta === 'sim') {
-    dados = dados.filter(item => temNumeroNaProposta(item.proposta));
-    } else if (filtroTotal.proposta === 'nao') {
-    dados = dados.filter(item => !temNumeroNaProposta(item.proposta));
-    }
-    }
-    const totalQtd = dados.length;
-    const totalCusto = dados.reduce((a,b)=>a+Number(b.custo),0);
-    const totalPreco = dados.reduce((a,b)=>a+Number(b.preco),0);
-    const totalDias = dados.reduce((a,b)=>a+Number(b.dias),0);
-    document.getElementById('qtd-total').textContent = totalQtd;
-    document.getElementById('total-custo-total').textContent = formatMoney(totalCusto);
-    document.getElementById('total-preco-total').textContent = formatMoney(totalPreco);
-    document.getElementById('media-dias-total').textContent = (totalDias / (totalQtd || 1)).toFixed(2);
-    const margemBrutaTot = totalPreco - totalCusto;
-    document.getElementById('margem-bruta-total').textContent = formatMoney(margemBrutaTot);
-    const percentTot = totalPreco > 0 ? ((margemBrutaTot / totalPreco) * 100).toFixed(2) : '0.00';
-    document.getElementById('margem-percent-total').textContent = percentTot + '%';
-    document.getElementById('media-km-total').textContent = calcularMediaKm(dados);
-    }
-    function preencherGraficosTotal() {
-    let dados = [...dadosDisponivel, ...dadosRepasse];
-    if (filtroTotal.search) {
-    const s = filtroTotal.search.toLowerCase();
-    dados = dados.filter(item =>
-    (item.modelo||'').toLowerCase().includes(s) ||
-    (item.placa||'').toLowerCase().includes(s) ||
-    (item.cor||'').toLowerCase().includes(s)
-    );
-    }
-    if (filtroTotal.patio && filtroTotal.patio.length) {
-    dados = dados.filter(item => filtroTotal.patio.includes(item.patio));
-    }
-    if (filtroTotal.modelo && filtroTotal.modelo.length) {
-    dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo)));
-    }
-    if (filtroTotal.dias) {
-    const faixa = filtroTotal.dias;
-    dados = dados.filter(item => {
-    if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
-    if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
-    if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
-    if (faixa === '91+') return item.dias >= 91;
-    });
-    }
-    if (filtroTotal.proposta) {
-    if (filtroTotal.proposta === 'sim') {
-    dados = dados.filter(item => temNumeroNaProposta(item.proposta));
-    } else if (filtroTotal.proposta === 'nao') {
-    dados = dados.filter(item => !temNumeroNaProposta(item.proposta));
-    }
-    }
-    preencherGraficos('pie-modelos-total', 'bar-dias-total', dados, true);
-    }
-    function preencherGraficos(pieId, barId, dados, isTotal) {
-    // Pie dos modelos
-    const modelos = {};
-    dados.forEach(item => {
-    const nome = normalizeModelo(item.modelo||'');
-    modelos[nome] = (modelos[nome] || 0) + 1;
-    });
-    const topModelos = Object.entries(modelos).sort((a, b) => b[1] - a[1]).slice(0, 5);
-    const pieModelosData = {
-    labels: topModelos.map(x => x[0]),
-    datasets: [{
-    data: topModelos.map(x => x[1]),
-    backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a','#8854d0'],
-    borderColor: '#fff',
-    borderWidth: 3
-    }]
-    };
-    if (window[pieId+'Chart']) window[pieId+'Chart'].destroy();
-    window[pieId+'Chart'] = new Chart(document.getElementById(pieId), {
-    type: 'pie',
-    data: pieModelosData,
-    options: {
-    plugins: {
-    legend: { position: 'top' },
-    tooltip: { enabled: true }
-    },
-    onClick: (evt, elements) => {
-    if (elements.length) {
-    const idx = elements[0].index;
-    if (isTotal) {
-    filtroTotal.modelo = [pieModelosData.labels[idx]];
-    updateMultiSelect('multiselect-modelo-total', getModelosTotal(), filtroTotal.modelo, v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
-    preencherResumoTotal();
-    preencherGraficosTotal();
-    } else {
-    filtroDisponivel.modelo = [pieModelosData.labels[idx]];
-    updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), filtroDisponivel.modelo, v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
-    preencherTabela('disponivel');
-    }
-    }
-    }
-    }
-    });
+      const tbody = document.querySelector(`#tabela-${tab} tbody`);
+      let dados = (tab === 'disponivel' ? dadosDisponivel : dadosRepasse).slice();
+      let filtro = (tab === 'disponivel' ? filtroDisponivel : filtroRepasse);
 
-    // Barras de dias
-    const faixas = { '1-30': 0, '31-60': 0, '61-90': 0, '91+': 0 };
-    dados.forEach(item => {
-    if (item.dias >= 1 && item.dias <= 30) faixas['1-30']++;
-    else if (item.dias >= 31 && item.dias <= 60) faixas['31-60']++;
-    else if (item.dias >= 61 && item.dias <= 90) faixas['61-90']++;
-    else if (item.dias >= 91) faixas['91+']++;
-    });
-    const barDiasData = {
-    labels: Object.keys(faixas),
-    datasets: [{
-    label: 'Qtd. de carros',
-    data: Object.values(faixas),
-    backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a']
-    }]
-    };
-    if (window[barId+'Chart']) window[barId+'Chart'].destroy();
-    window[barId+'Chart'] = new Chart(document.getElementById(barId), {
-    type: 'bar',
-    data: barDiasData,
-    options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-    legend: { display: false },
-    tooltip: { enabled: true }
-    },
-    scales: {
-    x: { title: { display: true, text: 'Dias em Estoque' } },
-    y: { title: { display: true, text: 'Quantidade de veículos' }, beginAtZero: true }
-    },
-    onClick: (evt, elements) => {
-    if (elements.length) {
-    const idx = elements[0].index;
-    if (isTotal) {
-    filtroTotal.dias = barDiasData.labels[idx];
-    preencherResumoTotal();
-    preencherGraficosTotal();
-    } else {
-    filtroDisponivel.dias = barDiasData.labels[idx];
-    preencherTabela('disponivel');
-    }
-    }
-    }
-    }
-    });
-    }
+      // Texto livre
+      if (filtro.search) {
+        const s = filtro.search.toLowerCase();
+        dados = dados.filter(item =>
+          (item.modelo||'').toLowerCase().includes(s) ||
+          (item.placa||'').toLowerCase().includes(s) ||
+          (item.cor||'').toLowerCase().includes(s)
+        );
+      }
+      // Proposta (SIM/NÃO)
+      if (filtro.proposta.length) {
+        dados = dados.filter(item => filtro.proposta.includes(item.proposta));
+      }
+      // Pátio
+      if (filtro.patio.length) {
+        dados = dados.filter(item => filtro.patio.includes(item.patio));
+      }
+      // Modelo (apenas na disponivel tem multiselect de modelo)
+      if (tab === 'disponivel' && filtro.modelo.length) {
+        dados = dados.filter(item => filtro.modelo.includes(normalizeModelo(item.modelo)));
+      }
+      // Dias (na disponivel)
+      if (tab === 'disponivel' && filtro.dias) {
+        const faixa = filtro.dias;
+        dados = dados.filter(item => {
+          if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
+          if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
+          if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
+          if (faixa === '91+') return item.dias >= 91;
+        });
+      }
+      // Descrição Situação (normalizada)
+      if (filtro.descricao.length) {
+        const selecionadasNorm = filtro.descricao.map(normalizeDescricao);
+        dados = dados.filter(item => selecionadasNorm.includes(normalizeDescricao(item.descricao)));
+      }
 
-    // Gráfico de barras por loja na aba Estoque Disponível, ordenado do maior para o menor
-    function atualizarBarraLojasDisponivel(dados) {
-    const contagem = {};
-    dados.forEach(item => {
-    let loja = (item.patio || '').trim();
-    if (!loja) loja = 'Outros';
-    contagem[loja] = (contagem[loja] || 0) + 1;
-    });
-    // Ordena do maior para o menor
-    const lojasOrdenadas = Object.entries(contagem)
-    .sort((a, b) => b[1] - a[1])
-    .map(x => x[0]);
-    const valoresOrdenados = lojasOrdenadas.map(loja => contagem[loja]);
-    const barLojasData = {
-    labels: lojasOrdenadas,
-    datasets: [{
-    label: 'Qtd. de carros',
-    data: valoresOrdenados,
-    backgroundColor: '#7ed6b5'
-    }]
-    };
-    if (window['bar-lojasChart']) window['bar-lojasChart'].destroy();
-    window['bar-lojasChart'] = new Chart(document.getElementById('bar-lojas'), {
-    type: 'bar',
-    data: barLojasData,
-    options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-    legend: { display: false },
-    tooltip: { enabled: true }
-    },
-    scales: {
-    x: { title: { display: true, text: 'Lojas' } },
-    y: { title: { display: true, text: 'Quantidade de veículos' }, beginAtZero: true }
-    },
-    onClick: (evt, elements) => {
-    if (elements.length) {
-    const idx = elements[0].index;
-    filtroDisponivel.patio = [barLojasData.labels[idx]];
-    updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), filtroDisponivel.patio, v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
-    preencherTabela('disponivel');
-    }
-    }
-    }
-    });
-    }
-
-    function resetFilters(tab) {
-    if (tab === 'disponivel') {
-    filtroDisponivel = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
-    document.getElementById('search-disponivel').value = '';
-    document.getElementById('filtro-proposta-disponivel').value = '';
-    updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
-    updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
-    preencherTabela('disponivel');
-    } else if (tab === 'repasse') {
-    filtroRepasse = { search: '', patio: [], proposta: '' };
-    document.getElementById('search-repasse').value = '';
-    document.getElementById('filtro-proposta-repasse').value = '';
-    updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
-    preencherTabela('repasse');
-    } else if (tab === 'total') {
-    filtroTotal = { search: '', patio: [], modelo: [], dias: '', proposta: '' };
-    document.getElementById('search-total').value = '';
-    document.getElementById('filtro-proposta-total').value = '';
-    updateMultiSelect('multiselect-patio-total', getPatiosTotal(), [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
-    updateMultiSelect('multiselect-modelo-total', getModelosTotal(), [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
-    preencherResumoTotal();
-    preencherGraficosTotal();
-    }
-    }
-
-    // Event listeners para busca
-    document.getElementById('search-disponivel').addEventListener('input', e => {
-    filtroDisponivel.search = e.target.value;
-    preencherTabela('disponivel');
-    });
-    document.getElementById('search-repasse').addEventListener('input', e => {
-    filtroRepasse.search = e.target.value;
-    preencherTabela('repasse');
-    });
-    document.getElementById('search-total').addEventListener('input', e => {
-    filtroTotal.search = e.target.value;
-    preencherResumoTotal();
-    preencherGraficosTotal();
-    });
-
-    // Event listeners para filtros de proposta
-    document.getElementById('filtro-proposta-disponivel').addEventListener('change', e => {
-    filtroDisponivel.proposta = e.target.value;
-    preencherTabela('disponivel');
-    });
-    document.getElementById('filtro-proposta-repasse').addEventListener('change', e => {
-    filtroRepasse.proposta = e.target.value;
-    preencherTabela('repasse');
-    });
-    document.getElementById('filtro-proposta-total').addEventListener('change', e => {
-    filtroTotal.proposta = e.target.value;
-    preencherResumoTotal();
-    preencherGraficosTotal();
-    });
-
-    // Event listeners para ordenação
-    document.querySelectorAll('#tabela-disponivel th').forEach(th => {
-    th.addEventListener('click', () => {
-    const col = th.getAttribute('data-col');
-    if (sortDisponivel.col === col) {
-    sortDisponivel.asc = !sortDisponivel.asc;
-    } else {
-    sortDisponivel.col = col;
-    sortDisponivel.asc = true;
-    }
-    atualizarSetas('disponivel', sortDisponivel);
-    preencherTabela('disponivel');
-    });
-    });
-    document.querySelectorAll('#tabela-repasse th').forEach(th => {
-    th.addEventListener('click', () => {
-    const col = th.getAttribute('data-col');
-    if (sortRepasse.col === col) {
-    sortRepasse.asc = !sortRepasse.asc;
-    } else {
-    sortRepasse.col = col;
-    sortRepasse.asc = true;
-    }
-    atualizarSetas('repasse', sortRepasse);
-    preencherTabela('repasse');
-    });
-    });
-    function atualizarSetas(tab, sort) {
-    const ths = document.querySelectorAll(`#tabela-${tab} th`);
-    ths.forEach(th => {
-    const col = th.getAttribute('data-col');
-    const arrow = th.querySelector('.sort-arrow');
-    if (col === sort.col) {
-    arrow.textContent = sort.asc ? '▲' : '▼';
-    } else {
-    arrow.textContent = '';
-    }
-    });
-    }
-
-    // Multi-select helpers
-    function createMultiSelect(id, options, selected, onChange, label) {
-    const container = document.getElementById(id);
-    container.innerHTML = `
-    <div class="selectBox">${label}: <span class="selected-items" style="margin-left:6px;color:#2980b9">${selected.length ? selected.join(', ') : 'Todos'}</span></div>
-    <div class="checkboxes"></div>
-    `;
-    const selectBox = container.querySelector('.selectBox');
-    const checkboxes = container.querySelector('.checkboxes');
-    checkboxes.innerHTML = '';
-    options.forEach(opt => {
-    const checked = selected.includes(opt) ? 'checked' : '';
-    checkboxes.innerHTML += `<label><input type="checkbox" value="${opt}" ${checked}> ${opt}</label>`;
-    });
-    selectBox.onclick = e => {
-    container.classList.toggle('active');
-    e.stopPropagation();
-    };
-    checkboxes.onclick = e => e.stopPropagation();
-    document.body.addEventListener('click', () => container.classList.remove('active'));
-    checkboxes.querySelectorAll('input[type=checkbox]').forEach(cb => {
-    cb.onchange = () => {
-    const checked = Array.from(checkboxes.querySelectorAll('input[type=checkbox]:checked')).map(x=>x.value);
-    container.querySelector('.selected-items').textContent = checked.length ? checked.join(', ') : 'Todos';
-    onChange(checked);
-    };
-    });
-    }
-    function updateMultiSelect(id, options, selected, onChange, label) {
-    createMultiSelect(id, options, selected, onChange, label);
-    }
-    function getPatiosDisponivel() {
-    return [...new Set(dadosDisponivel.map(x=>x.patio).filter(Boolean))].sort();
-    }
-    function getModelosDisponivel() {
-    return [...new Set(dadosDisponivel.map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort();
-    }
-    function getPatiosRepasse() {
-    return [...new Set(dadosRepasse.map(x=>x.patio).filter(Boolean))].sort();
-    }
-    function getPatiosTotal() {
-    return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>x.patio).filter(Boolean))].sort();
-    }
-    function getModelosTotal() {
-    return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort();
-    }
-
-    // Função para identificar colunas por similaridade
-    function findCol(obj, keys) {
-    const norm = s => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/gi,'').toLowerCase() : '';
-    const objKeys = Object.keys(obj).map(k => norm(k));
-    for (let key of keys) {
-    let idx = objKeys.findIndex(k => k.includes(norm(key)));
-    if (idx !== -1) return Object.keys(obj)[idx];
-    }
-    return null;
-    }
-
-    // FUNÇÃO MELHORADA: Detecta automaticamente a linha de início dos dados
-    function findDataStartRow(sheet) {
-      try {
-        if (!sheet || !sheet['!ref']) {
-          console.log('Sheet inválida ou sem referência');
+      // Ordenação atual (se houver)
+      let sort = (tab === 'disponivel' ? sortDisponivel : sortRepasse);
+      if (sort.col) {
+        dados.sort((a, b) => {
+          let vA = a[sort.col], vB = b[sort.col];
+          if (typeof vA === 'string') vA = vA.toLowerCase();
+          if (typeof vB === 'string') vB = vB.toLowerCase();
+          if (vA < vB) return sort.asc ? -1 : 1;
+          if (vA > vB) return sort.asc ? 1 : -1;
           return 0;
-        }
-        
-        const range = XLSX.utils.decode_range(sheet['!ref']);
-        console.log('Range da planilha:', range);
-        
-        // Palavras-chave que indicam cabeçalho
-        const headerKeywords = [
-          'modelo', 'patio', 'pátio', 'placa', 'dias', 'ano', 'cor', 
-          'preco', 'preço', 'km', 'custo', 'fabrica', 'fábrica',
-          'situacao', 'situação', 'descricao', 'descrição', 'venda',
-          'estoque', 'quilometragem', 'nota', 'proposta'
-        ];
-        
-        let bestRow = 0;
-        let bestScore = 0;
-        
-        // Analisa até 15 linhas ou até o fim da planilha
-        const maxRowsToCheck = Math.min(15, range.e.r + 1);
-        
-        for (let row = 0; row < maxRowsToCheck; row++) {
-          let score = 0;
-          let filledCells = 0;
-          let hasKeywords = false;
-          
-          // Verifica todas as colunas da linha
-          for (let col = range.s.c; col <= range.e.c; col++) {
-            const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
-            const cell = sheet[cellAddress];
-            
-            if (cell && cell.v !== undefined && cell.v !== null && String(cell.v).trim() !== '') {
-              filledCells++;
-              
-              const cellValue = String(cell.v).toLowerCase().trim();
-              
-              // Verifica se contém palavras-chave de cabeçalho
-              for (let keyword of headerKeywords) {
-                if (cellValue.includes(keyword)) {
-                  score += 10;
-                  hasKeywords = true;
-                  break;
-                }
-              }
-              
-              // Pontuação adicional para células com texto (não apenas números)
-              if (isNaN(cell.v) && cellValue.length > 2) {
-                score += 2;
-              }
-            }
-          }
-          
-          // Bonificação por ter muitas células preenchidas
-          score += filledCells;
-          
-          // Penalidade para linhas muito no início se não tiverem keywords
-          if (row < 3 && !hasKeywords && filledCells < 5) {
-            score -= 5;
-          }
-          
-          console.log(`Linha ${row + 1}: ${filledCells} células, score: ${score}, keywords: ${hasKeywords}`);
-          
-          // Atualiza a melhor linha se o score for maior
-          if (score > bestScore && filledCells >= 3) {
-            bestScore = score;
-            bestRow = row;
-          }
-        }
-        
-        console.log(`Melhor linha detectada: ${bestRow + 1} (score: ${bestScore})`);
-        return bestRow;
-        
-      } catch (error) {
-        console.error('Erro na detecção da linha de início:', error);
-        return 0;
+        });
+      }
+
+      // Render
+      tbody.innerHTML = '';
+      let totalCusto = 0, totalPreco = 0, totalDias = 0;
+      dados.forEach(item => {
+        totalCusto += Number(item.custo);
+        totalPreco += Number(item.preco);
+        totalDias += Number(item.dias);
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.proposta||''}</td>
+            <td>${item.patio||''}</td>
+            <td>${item.modelo||''}</td>
+            <td>${item.dias||''}</td>
+            <td>${item.ano||''}</td>
+            <td>${item.cor||''}</td>
+            <td>${formatMoney(item.preco||0)}</td>
+            <td>${item.placa||''}</td>
+            <td>${item.km||''}</td>
+            <td>${item.descricao||''}</td>
+            <td>${formatMoney(item.custo||0)}</td>
+          </tr>
+        `;
+      });
+
+      // KPIs por aba
+      if (tab === 'disponivel') {
+        document.getElementById('qtd-disponivel').textContent = dados.length;
+        document.getElementById('total-custo-disponivel').textContent = formatMoney(totalCusto);
+        document.getElementById('total-preco-disponivel').textContent = formatMoney(totalPreco);
+        document.getElementById('media-dias-disponivel').textContent = (totalDias / (dados.length || 1)).toFixed(2);
+        const margemBrutaDisp = totalPreco - totalCusto;
+        document.getElementById('margem-bruta-disponivel').textContent = formatMoney(margemBrutaDisp);
+        const percentDisp = totalPreco > 0 ? ((margemBrutaDisp / totalPreco) * 100).toFixed(2) : '0.00';
+        document.getElementById('margem-percent-disponivel').textContent = percentDisp + '%';
+        document.getElementById('media-km-disponivel').textContent = calcularMediaKm(dados);
+        document.getElementById('media-ano-disponivel').textContent = calcularMediaAno(dados);
+        document.getElementById('media-custo-disponivel').textContent = dados.length ? formatMoney(totalCusto/dados.length) : 'R$ 0,00';
+        document.getElementById('media-preco-venda-disponivel').textContent = dados.length ? formatMoney(totalPreco/dados.length) : 'R$ 0,00';
+        preencherGraficos('pie-modelos', 'bar-dias', dados);
+        atualizarBarraLojasDisponivel(dados);
+      } else {
+        document.getElementById('qtd-repasse').textContent = dados.length;
+        document.getElementById('total-custo-repasse').textContent = formatMoney(totalCusto);
+        document.getElementById('media-veiculo-repasse').textContent = formatMoney(totalCusto / (dados.length || 1));
+        document.getElementById('media-dias-repasse').textContent = (totalDias / (dados.length || 1)).toFixed(1);
+        document.getElementById('media-km-repasse').textContent = calcularMediaKm(dados);
       }
     }
 
-    // FUNÇÃO MELHORADA: Converte planilha para JSON com detecção automática
+    function preencherResumoTotal() {
+      let dados = [...dadosDisponivel, ...dadosRepasse];
+
+      if (filtroTotal.search) {
+        const s = filtroTotal.search.toLowerCase();
+        dados = dados.filter(item =>
+          (item.modelo||'').toLowerCase().includes(s) ||
+          (item.placa||'').toLowerCase().includes(s) ||
+          (item.cor||'').toLowerCase().includes(s)
+        );
+      }
+      if (filtroTotal.proposta.length) {
+        dados = dados.filter(item => filtroTotal.proposta.includes(item.proposta));
+      }
+      if (filtroTotal.patio.length) {
+        dados = dados.filter(item => filtroTotal.patio.includes(item.patio));
+      }
+      if (filtroTotal.modelo.length) {
+        dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo)));
+      }
+      if (filtroTotal.dias) {
+        const faixa = filtroTotal.dias;
+        dados = dados.filter(item => {
+          if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
+          if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
+          if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
+          if (faixa === '91+') return item.dias >= 91;
+        });
+      }
+      if (filtroTotal.descricao.length) {
+        const selecionadasNorm = filtroTotal.descricao.map(normalizeDescricao);
+        dados = dados.filter(item => selecionadasNorm.includes(normalizeDescricao(item.descricao)));
+      }
+
+      const totalQtd = dados.length;
+      const totalCusto = dados.reduce((a,b)=>a+Number(b.custo),0);
+      const totalPreco = dados.reduce((a,b)=>a+Number(b.preco),0);
+      const totalDias = dados.reduce((a,b)=>a+Number(b.dias),0);
+
+      document.getElementById('qtd-total').textContent = totalQtd;
+      document.getElementById('total-custo-total').textContent = formatMoney(totalCusto);
+      document.getElementById('total-preco-total').textContent = formatMoney(totalPreco);
+      document.getElementById('media-dias-total').textContent = (totalDias / (totalQtd || 1)).toFixed(2);
+      const margemBrutaTot = totalPreco - totalCusto;
+      document.getElementById('margem-bruta-total').textContent = formatMoney(margemBrutaTot);
+      const percentTot = totalPreco > 0 ? ((margemBrutaTot / totalPreco) * 100).toFixed(2) : '0.00';
+      document.getElementById('margem-percent-total').textContent = percentTot + '%';
+      document.getElementById('media-km-total').textContent = calcularMediaKm(dados);
+    }
+
+    function preencherGraficosTotal() {
+      let dados = [...dadosDisponivel, ...dadosRepasse];
+
+      if (filtroTotal.search) {
+        const s = filtroTotal.search.toLowerCase();
+        dados = dados.filter(item =>
+          (item.modelo||'').toLowerCase().includes(s) ||
+          (item.placa||'').toLowerCase().includes(s) ||
+          (item.cor||'').toLowerCase().includes(s)
+        );
+      }
+      if (filtroTotal.proposta.length) {
+        dados = dados.filter(item => filtroTotal.proposta.includes(item.proposta));
+      }
+      if (filtroTotal.patio.length) {
+        dados = dados.filter(item => filtroTotal.patio.includes(item.patio));
+      }
+      if (filtroTotal.modelo.length) {
+        dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo)));
+      }
+      if (filtroTotal.dias) {
+        const faixa = filtroTotal.dias;
+        dados = dados.filter(item => {
+          if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
+          if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
+          if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
+          if (faixa === '91+') return item.dias >= 91;
+        });
+      }
+      if (filtroTotal.descricao.length) {
+        const selecionadasNorm = filtroTotal.descricao.map(normalizeDescricao);
+        dados = dados.filter(item => selecionadasNorm.includes(normalizeDescricao(item.descricao)));
+      }
+
+      preencherGraficos('pie-modelos-total', 'bar-dias-total', dados, true);
+    }
+
+    function preencherGraficos(pieId, barId, dados, isTotal) {
+      // Pie dos modelos
+      const modelos = {};
+      dados.forEach(item => {
+        const nome = normalizeModelo(item.modelo||'');
+        modelos[nome] = (modelos[nome] || 0) + 1;
+      });
+      const topModelos = Object.entries(modelos).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      const pieModelosData = {
+        labels: topModelos.map(x => x[0]),
+        datasets: [{ data: topModelos.map(x => x[1]), backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a','#8854d0'], borderColor: '#fff', borderWidth: 3 }]
+      };
+      if (window[pieId+'Chart']) window[pieId+'Chart'].destroy();
+      window[pieId+'Chart'] = new Chart(document.getElementById(pieId), {
+        type: 'pie',
+        data: pieModelosData,
+        options: {
+          plugins: { legend: { position: 'top' }, tooltip: { enabled: true } },
+          onClick: (evt, elements) => {
+            if (elements.length) {
+              const idx = elements[0].index;
+              if (isTotal) {
+                filtroTotal.modelo = [pieModelosData.labels[idx]];
+                updateMultiSelect('multiselect-modelo-total', getModelosTotal(), filtroTotal.modelo, v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+                preencherResumoTotal(); preencherGraficosTotal();
+              } else {
+                filtroDisponivel.modelo = [pieModelosData.labels[idx]];
+                updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), filtroDisponivel.modelo, v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+                preencherTabela('disponivel');
+              }
+            }
+          }
+        }
+      });
+
+      // Barras de dias
+      const faixas = { '1-30': 0, '31-60': 0, '61-90': 0, '91+': 0 };
+      dados.forEach(item => {
+        if (item.dias >= 1 && item.dias <= 30) faixas['1-30']++;
+        else if (item.dias >= 31 && item.dias <= 60) faixas['31-60']++;
+        else if (item.dias >= 61 && item.dias <= 90) faixas['61-90']++;
+        else if (item.dias >= 91) faixas['91+']++;
+      });
+      const barDiasData = { labels: Object.keys(faixas), datasets: [{ label: 'Qtd. de carros', data: Object.values(faixas), backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a'] }] };
+      if (window[barId+'Chart']) window[barId+'Chart'].destroy();
+      window[barId+'Chart'] = new Chart(document.getElementById(barId), {
+        type: 'bar',
+        data: barDiasData,
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { enabled: true } },
+          scales: { x: { title: { display: true, text: 'Dias em Estoque' } }, y: { title: { display: true, text: 'Quantidade de veículos' }, beginAtZero: true } },
+          onClick: (evt, elements) => {
+            if (elements.length) {
+              const idx = elements[0].index;
+              if (isTotal) {
+                filtroTotal.dias = barDiasData.labels[idx]; preencherResumoTotal(); preencherGraficosTotal();
+              } else {
+                filtroDisponivel.dias = barDiasData.labels[idx]; preencherTabela('disponivel');
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function atualizarBarraLojasDisponivel(dados) {
+      const contagem = {};
+      dados.forEach(item => {
+        let loja = (item.patio || '').trim();
+        if (!loja) loja = 'Outros';
+        contagem[loja] = (contagem[loja] || 0) + 1;
+      });
+      const lojasOrdenadas = Object.entries(contagem).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+      const quantidades = lojasOrdenadas.map(loja => contagem[loja]);
+      if (window.barLojasDisponivelChart) window.barLojasDisponivelChart.destroy();
+      window.barLojasDisponivelChart = new Chart(document.getElementById('bar-lojas'), {
+        type: 'bar',
+        data: { labels: lojasOrdenadas, datasets: [{ label: 'Estoque por Loja', data: quantidades, backgroundColor: ['#7ed6b5','#5a8ac6','#f7b731','#eb3b5a','#8854d0','#20bf6b','#fd9644','#a55eea','#778ca3','#e17055'] }] },
+        options: {
+          plugins: { legend: { display: false } }, indexAxis: 'x',
+          scales: { x: { title: { display: false }, grid: { display: false } }, y: { title: { display: false }, beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } },
+          responsive: true, maintainAspectRatio: false
+        }
+      });
+    }
+
+    // Helpers Multi-select
+    function createMultiSelect(id, options, selected, onChange, label) {
+      const container = document.getElementById(id);
+      container.innerHTML = `
+        <div class="selectBox">${label}: <span class="selected-items" style="margin-left:6px;color:#2980b9">${selected.length ? selected.join(', ') : 'Todos'}</span></div>
+        <div class="checkboxes"></div>
+      `;
+      const selectBox = container.querySelector('.selectBox');
+      const checkboxes = container.querySelector('.checkboxes');
+      checkboxes.innerHTML = '';
+      options.forEach(opt => {
+        const checked = selected.includes(opt) ? 'checked' : '';
+        checkboxes.innerHTML += `<label><input type="checkbox" value="${opt}" ${checked}> ${opt}</label>`;
+      });
+      selectBox.onclick = e => { container.classList.toggle('active'); e.stopPropagation(); };
+      checkboxes.onclick = e => e.stopPropagation();
+      document.body.addEventListener('click', () => container.classList.remove('active'));
+      checkboxes.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        cb.onchange = () => {
+          const checked = Array.from(checkboxes.querySelectorAll('input[type=checkbox]:checked')).map(x=>x.value);
+          container.querySelector('.selected-items').textContent = checked.length ? checked.join(', ') : 'Todos';
+          onChange(checked);
+        };
+      });
+    }
+    function updateMultiSelect(id, options, selected, onChange, label) {
+      createMultiSelect(id, options, selected, onChange, label);
+    }
+
+    // Listas únicas
+    function getPatiosDisponivel() { return [...new Set(dadosDisponivel.map(x=>x.patio).filter(Boolean))].sort(); }
+    function getModelosDisponivel() { return [...new Set(dadosDisponivel.map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort(); }
+    function getPatiosRepasse() { return [...new Set(dadosRepasse.map(x=>x.patio).filter(Boolean))].sort(); }
+    function getPatiosTotal() { return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>x.patio).filter(Boolean))].sort(); }
+    function getModelosTotal() { return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort(); }
+
+    // Identifica colunas por similaridade (para campos diversos)
+    function findCol(obj, keys) {
+      const norm = s => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/gi,'').toLowerCase() : '';
+      const objKeys = Object.keys(obj).map(k => norm(k));
+      for (let key of keys) {
+        let idx = objKeys.findIndex(k => k.includes(norm(key)));
+        if (idx !== -1) return Object.keys(obj)[idx];
+      }
+      return null;
+    }
+
+    // Detecta automaticamente a linha do cabeçalho
+    function findDataStartRow(sheet) {
+      try {
+        if (!sheet || !sheet['!ref']) return 0;
+        const range = XLSX.utils.decode_range(sheet['!ref']);
+        const headerKeywords = ['modelo','patio','pátio','placa','dias','ano','cor','preco','preço','km','custo','fabrica','fábrica','situacao','situação','descricao','descrição','venda','estoque','quilometragem','nota','proposta'];
+        let bestRow = 0, bestScore = 0;
+        const maxRowsToCheck = Math.min(15, range.e.r + 1);
+        for (let row = 0; row < maxRowsToCheck; row++) {
+          let score = 0, filledCells = 0, hasKeywords = false;
+          for (let col = range.s.c; col <= range.e.c; col++) {
+            const cell = sheet[XLSX.utils.encode_cell({ r: row, c: col })];
+            if (cell && String(cell.v).trim() !== '') {
+              filledCells++;
+              const cellValue = String(cell.v).toLowerCase().trim();
+              for (let keyword of headerKeywords) {
+                if (cellValue.includes(keyword)) { score += 10; hasKeywords = true; break; }
+              }
+              if (isNaN(cell.v) && cellValue.length > 2) score += 2;
+            }
+          }
+          score += filledCells;
+          if (row < 3 && !hasKeywords && filledCells < 5) score -= 5;
+          if (score > bestScore && filledCells >= 3) { bestScore = score; bestRow = row; }
+        }
+        return bestRow;
+      } catch { return 0; }
+    }
+
     function convertSheetToData(sheet) {
       try {
-        if (!sheet || !sheet['!ref']) {
-          console.log('Sheet inválida');
-          return { data: [], detectedRow: 1 };
-        }
-        
+        if (!sheet || !sheet['!ref']) return { data: [], detectedRow: 1 };
         const headerRow = findDataStartRow(sheet);
-        console.log(`Usando linha ${headerRow + 1} como cabeçalho`);
-        
-        // Converte a planilha inteira para JSON primeiro
-        const allData = XLSX.utils.sheet_to_json(sheet, { 
-          header: 1, // Usa array de arrays
-          defval: '',
-          blankrows: false
-        });
-        
-        if (allData.length <= headerRow) {
-          console.log('Não há dados suficientes na planilha');
-          return { data: [], detectedRow: headerRow + 1 };
-        }
-        
-        // Pega o cabeçalho da linha detectada
+        const allData = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '', blankrows: false });
+        if (allData.length <= headerRow) return { data: [], detectedRow: headerRow + 1 };
         const headers = allData[headerRow];
-        console.log('Cabeçalhos encontrados:', headers);
-        
-        // Converte as linhas de dados usando os cabeçalhos
         const dataRows = allData.slice(headerRow + 1);
         const jsonData = dataRows.map(row => {
           const obj = {};
           headers.forEach((header, index) => {
-            if (header && header.toString().trim()) {
-              obj[header.toString().trim()] = row[index] || '';
-            }
+            if (header && header.toString().trim()) obj[header.toString().trim()] = row[index] || '';
           });
           return obj;
-        }).filter(row => {
-          // Remove linhas completamente vazias
-          return Object.values(row).some(val => val && val.toString().trim() !== '');
-        });
-        
-        console.log(`Convertidos ${jsonData.length} registros`);
-        return { 
-          data: jsonData, 
-          detectedRow: headerRow + 1 
-        };
-        
+        }).filter(row => Object.values(row).some(val => val && val.toString().trim() !== ''));
+        return { data: jsonData, detectedRow: headerRow + 1 };
       } catch (error) {
-        console.error('Erro na conversão da planilha:', error);
         showStatus(`❌ Erro ao processar planilha: ${error.message}`, true);
         return { data: [], detectedRow: 1 };
       }
     }
 
+    // Upload base
     document.getElementById('basefile').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
-      
+
       document.getElementById('basefile-name').textContent = file.name;
       showStatus('📊 Processando arquivo Excel...');
-      
+
       const reader = new FileReader();
       reader.onload = function(evt) {
         try {
           const data = new Uint8Array(evt.target.result);
           const workbook = XLSX.read(data, {type: 'array'});
-          
-          console.log('Planilhas encontradas:', workbook.SheetNames);
-          
+
           let sheetDisponivel, sheetRepasse;
-          
-          // Procura pelas planilhas por nome
           workbook.SheetNames.forEach(name => {
             const norm = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            console.log(`Analisando planilha: ${name} (normalizado: ${norm})`);
-            
-            if (!sheetDisponivel && (norm.includes('dispon') || norm.includes('estoque'))) {
-              sheetDisponivel = workbook.Sheets[name];
-              console.log(`Planilha disponível encontrada: ${name}`);
-            }
-            if (!sheetRepasse && norm.includes('repasse')) {
-              sheetRepasse = workbook.Sheets[name];
-              console.log(`Planilha repasse encontrada: ${name}`);
-            }
+            if (!sheetDisponivel && (norm.includes('dispon') || norm.includes('estoque'))) sheetDisponivel = workbook.Sheets[name];
+            if (!sheetRepasse && norm.includes('repasse')) sheetRepasse = workbook.Sheets[name];
           });
-          
-          // Se não encontrou por nome, usa as primeiras planilhas
-          if (!sheetDisponivel) {
-            sheetDisponivel = workbook.Sheets[workbook.SheetNames[0]];
-            console.log(`Usando primeira planilha como disponível: ${workbook.SheetNames[0]}`);
-          }
-          if (!sheetRepasse && workbook.SheetNames.length > 1) {
-            sheetRepasse = workbook.Sheets[workbook.SheetNames[1]];
-            console.log(`Usando segunda planilha como repasse: ${workbook.SheetNames[1]}`);
-          }
-          
-          // Se só há uma planilha, usa ela para ambos
-          if (!sheetRepasse) {
-            sheetRepasse = sheetDisponivel;
-            console.log('Usando mesma planilha para ambas as abas');
-          }
+          if (!sheetDisponivel) sheetDisponivel = workbook.Sheets[workbook.SheetNames[0]];
+          if (!sheetRepasse && workbook.SheetNames.length > 1) sheetRepasse = workbook.Sheets[workbook.SheetNames[1]];
+          if (!sheetRepasse) sheetRepasse = sheetDisponivel;
 
           function mapRow(row) {
+            // Proposta: coluna A (primeira coluna do objeto). Se tiver valor => "SIM", senão "NÃO"
+            const colAKey = Object.keys(row)[0];
+            const propostaRaw = colAKey ? row[colAKey] : '';
+            const descricaoRaw = row[findCol(row, ['descricao situacao','descrição situação','situacao','situação'])] || '';
+
             return {
-              proposta: row[findCol(row, ['proposta'])] || row[Object.keys(row)[0]] || '', // Coluna A como fallback
+              proposta: (propostaRaw !== undefined && String(propostaRaw).toString().trim() !== '') ? 'SIM' : 'NÃO',
               patio: row[findCol(row, ['patio','pátio'])] || '',
               modelo: row[findCol(row, ['modelo','nome do modelo'])] || '',
               dias: Number(row[findCol(row, ['dpt','dias','dias estoque','dias em estoque'])] || 0),
@@ -1145,25 +722,20 @@
               preco: Number(row[findCol(row, ['preco venda','preço venda','preco','preço'])] || 0),
               placa: row[findCol(row, ['placa'])] || '',
               km: row[findCol(row, ['km','quilometragem'])] || '',
-              descricao: row[findCol(row, ['descricao situacao','descrição situação','situacao','situação'])] || '',
+              descricao: descricaoRaw,
               custo: Number(row[findCol(row, ['total nota fabrica','nota fabrica','custo','valor de custo'])] || 0)
             }
           }
 
-          // Processa as planilhas
           const disponivelResult = convertSheetToData(sheetDisponivel);
           const repasseResult = convertSheetToData(sheetRepasse);
-          
+
           dadosDisponivel = disponivelResult.data.map(mapRow);
           dadosRepasse = repasseResult.data.map(mapRow);
-          
-          console.log(`Dados processados - Disponível: ${dadosDisponivel.length}, Repasse: ${dadosRepasse.length}`);
 
-          // Mostra informação sobre a detecção
           const totalRegistros = dadosDisponivel.length + dadosRepasse.length;
           if (totalRegistros > 0) {
-            showStatus(`
-              ✅ Dados carregados com sucesso!<br>
+            showStatus(`✅ Dados carregados com sucesso!<br>
               • Planilha "Disponível": ${dadosDisponivel.length} registros (linha ${disponivelResult.detectedRow})<br>
               • Planilha "Repasse": ${dadosRepasse.length} registros (linha ${repasseResult.detectedRow})<br>
               • Total: ${totalRegistros} registros processados
@@ -1173,41 +745,109 @@
             return;
           }
 
-          // Atualiza os multi-selects
+          // MULTISELECTS — Proposta (fixo SIM/NÃO) / Pátio / Modelo / Situação
+          updateMultiSelect('multiselect-proposta-disponivel', OPCOES_PROPOSTA, filtroDisponivel.proposta, v => { filtroDisponivel.proposta = v; preencherTabela('disponivel'); }, 'Proposta');
+          updateMultiSelect('multiselect-proposta-repasse',   OPCOES_PROPOSTA, filtroRepasse.proposta,   v => { filtroRepasse.proposta   = v; preencherTabela('repasse');   }, 'Proposta');
+          updateMultiSelect('multiselect-proposta-total',     OPCOES_PROPOSTA, filtroTotal.proposta,     v => { filtroTotal.proposta     = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Proposta');
+
           updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), filtroDisponivel.patio, v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
           updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), filtroDisponivel.modelo, v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
           updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), filtroRepasse.patio, v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
           updateMultiSelect('multiselect-patio-total', getPatiosTotal(), filtroTotal.patio, v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
           updateMultiSelect('multiselect-modelo-total', getModelosTotal(), filtroTotal.modelo, v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
 
-          // Atualiza as tabelas e gráficos
+          // SITUAÇÃO (opções fixas)
+          updateMultiSelect('multiselect-descricao-disponivel', OPCOES_SITUACAO, filtroDisponivel.descricao, v => { filtroDisponivel.descricao = v; preencherTabela('disponivel'); }, 'Situação');
+          updateMultiSelect('multiselect-descricao-repasse',   OPCOES_SITUACAO, filtroRepasse.descricao,   v => { filtroRepasse.descricao   = v; preencherTabela('repasse');   }, 'Situação');
+          updateMultiSelect('multiselect-descricao-total',     OPCOES_SITUACAO, filtroTotal.descricao,     v => { filtroTotal.descricao     = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Situação');
+
           preencherTabela('disponivel');
           preencherTabela('repasse');
           preencherResumoTotal();
           preencherGraficosTotal();
-          
         } catch (error) {
           console.error('Erro ao processar arquivo:', error);
           showStatus(`❌ Erro ao processar arquivo: ${error.message}`, true);
         }
       };
-      
-      reader.onerror = function() {
-        showStatus('❌ Erro ao ler o arquivo. Verifique se é um arquivo Excel válido.', true);
-      };
-      
+      reader.onerror = function() { showStatus('❌ Erro ao ler o arquivo. Verifique se é um arquivo Excel válido.', true); };
       reader.readAsArrayBuffer(file);
     });
 
-    // Inicialização dos multi-selects vazios
+    // Eventos e sort nas colunas
     document.addEventListener('DOMContentLoaded', function() {
-      updateMultiSelect('multiselect-patio-disponivel', [], [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
-      updateMultiSelect('multiselect-modelo-disponivel', [], [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
-      updateMultiSelect('multiselect-patio-repasse', [], [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
-      updateMultiSelect('multiselect-patio-total', [], [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
-      updateMultiSelect('multiselect-modelo-total', [], [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+      document.getElementById('search-repasse').addEventListener('input', e => { filtroRepasse.search = e.target.value; preencherTabela('repasse'); });
+      document.getElementById('search-disponivel').addEventListener('input', e => { filtroDisponivel.search = e.target.value; preencherTabela('disponivel'); });
+      document.getElementById('search-total').addEventListener('input', e => { filtroTotal.search = e.target.value; preencherResumoTotal(); preencherGraficosTotal(); });
+
+      document.querySelectorAll('#tabela-repasse th').forEach(th => {
+        th.addEventListener('click', function() {
+          const col = th.getAttribute('data-col'); if (!col) return;
+          if (sortRepasse.col === col) sortRepasse.asc = !sortRepasse.asc; else { sortRepasse.col = col; sortRepasse.asc = true; }
+          atualizarSetas('repasse', sortRepasse); preencherTabela('repasse');
+        });
+      });
+      document.querySelectorAll('#tabela-disponivel th').forEach(th => {
+        th.addEventListener('click', function() {
+          const col = th.getAttribute('data-col'); if (!col) return;
+          if (sortDisponivel.col === col) sortDisponivel.asc = !sortDisponivel.asc; else { sortDisponivel.col = col; sortDisponivel.asc = true; }
+          atualizarSetas('disponivel', sortDisponivel); preencherTabela('disponivel');
+        });
+      });
+
+      // Inicialização visual dos multiselects vazios (antes de carregar a base)
+      updateMultiSelect('multiselect-proposta-disponivel', OPCOES_PROPOSTA, [], v => { filtroDisponivel.proposta = v; preencherTabela('disponivel'); }, 'Proposta');
+      updateMultiSelect('multiselect-proposta-repasse',   OPCOES_PROPOSTA, [], v => { filtroRepasse.proposta   = v; preencherTabela('repasse');   }, 'Proposta');
+      updateMultiSelect('multiselect-proposta-total',     OPCOES_PROPOSTA, [], v => { filtroTotal.proposta     = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Proposta');
+
+      updateMultiSelect('multiselect-patio-disponivel',   [], [], v => { filtroDisponivel.patio   = v; preencherTabela('disponivel'); }, 'Pátio');
+      updateMultiSelect('multiselect-modelo-disponivel',  [], [], v => { filtroDisponivel.modelo  = v; preencherTabela('disponivel'); }, 'Modelo');
+      updateMultiSelect('multiselect-patio-repasse',      [], [], v => { filtroRepasse.patio      = v; preencherTabela('repasse');   }, 'Pátio');
+      updateMultiSelect('multiselect-patio-total',        [], [], v => { filtroTotal.patio        = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
+      updateMultiSelect('multiselect-modelo-total',       [], [], v => { filtroTotal.modelo       = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+
+      // Situação já com opções fixas
+      updateMultiSelect('multiselect-descricao-disponivel', OPCOES_SITUACAO, [], v => { filtroDisponivel.descricao = v; preencherTabela('disponivel'); }, 'Situação');
+      updateMultiSelect('multiselect-descricao-repasse',   OPCOES_SITUACAO, [], v => { filtroRepasse.descricao   = v; preencherTabela('repasse');   }, 'Situação');
+      updateMultiSelect('multiselect-descricao-total',     OPCOES_SITUACAO, [], v => { filtroTotal.descricao     = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Situação');
     });
+
+    function atualizarSetas(tab, sort) {
+      const ths = document.querySelectorAll(`#tabela-${tab} th`);
+      ths.forEach(th => {
+        const col = th.getAttribute('data-col');
+        const arrow = th.querySelector('.sort-arrow');
+        if (col === sort.col) arrow.textContent = sort.asc ? '▲' : '▼';
+        else arrow.textContent = '';
+      });
+    }
+
+    function resetFilters(tab) {
+      if (tab === 'repasse') {
+        filtroRepasse = { search: '', proposta: [], patio: [], descricao: [] };
+        document.getElementById('search-repasse').value = '';
+        updateMultiSelect('multiselect-proposta-repasse', OPCOES_PROPOSTA, [], v => { filtroRepasse.proposta = v; preencherTabela('repasse'); }, 'Proposta');
+        updateMultiSelect('multiselect-patio-repasse', getPatiosRepasse(), [], v => { filtroRepasse.patio = v; preencherTabela('repasse'); }, 'Pátio');
+        updateMultiSelect('multiselect-descricao-repasse', OPCOES_SITUACAO, [], v => { filtroRepasse.descricao = v; preencherTabela('repasse'); }, 'Situação');
+        preencherTabela('repasse');
+      } else if (tab === 'disponivel') {
+        filtroDisponivel = { search: '', proposta: [], patio: [], modelo: [], dias: '', descricao: [] };
+        document.getElementById('search-disponivel').value = '';
+        updateMultiSelect('multiselect-proposta-disponivel', OPCOES_PROPOSTA, [], v => { filtroDisponivel.proposta = v; preencherTabela('disponivel'); }, 'Proposta');
+        updateMultiSelect('multiselect-patio-disponivel', getPatiosDisponivel(), [], v => { filtroDisponivel.patio = v; preencherTabela('disponivel'); }, 'Pátio');
+        updateMultiSelect('multiselect-modelo-disponivel', getModelosDisponivel(), [], v => { filtroDisponivel.modelo = v; preencherTabela('disponivel'); }, 'Modelo');
+        updateMultiSelect('multiselect-descricao-disponivel', OPCOES_SITUACAO, [], v => { filtroDisponivel.descricao = v; preencherTabela('disponivel'); }, 'Situação');
+        preencherTabela('disponivel');
+      } else if (tab === 'total') {
+        filtroTotal = { search: '', proposta: [], patio: [], modelo: [], dias: '', descricao: [] };
+        document.getElementById('search-total').value = '';
+        updateMultiSelect('multiselect-proposta-total', OPCOES_PROPOSTA, [], v => { filtroTotal.proposta = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Proposta');
+        updateMultiSelect('multiselect-patio-total', getPatiosTotal(), [], v => { filtroTotal.patio = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Pátio');
+        updateMultiSelect('multiselect-modelo-total', getModelosTotal(), [], v => { filtroTotal.modelo = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Modelo');
+        updateMultiSelect('multiselect-descricao-total', OPCOES_SITUACAO, [], v => { filtroTotal.descricao = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Situação');
+        preencherResumoTotal(); preencherGraficosTotal();
+      }
+    }
   </script>
 </body>
 </html>
-
