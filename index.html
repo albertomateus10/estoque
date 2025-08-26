@@ -99,13 +99,35 @@
     .status-info { border-radius: 4px; padding: 8px 12px; margin: 10px 0; font-size: 0.9em; }
     .status-success { background: #e8f5e8; border: 1px solid #4caf50; color: #2e7d32; }
     .status-error { background: #ffebee; border: 1px solid #f44336; color: #c62828; }
+
+    /* Botões de exportação */
+    .export-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .export-btn {
+      background: #20bf6b;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .export-btn:hover {
+      opacity: 0.85;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <div class="header-bar">
-    <div></div>
+    <div class="export-buttons">
+      <button class="export-btn" onclick="exportToExcel()">Exportar Excel</button>
+    </div>
     <div class="base-upload">
       <label for="basefile">Base:</label>
       <button class="file-btn" onclick="document.getElementById('basefile').click()">Selecionar Excel</button>
@@ -262,6 +284,104 @@
 
     const OPCOES_SITUACAO = ['DISPONÍVEL', 'INDISPONÍVEL'];
     const OPCOES_PROPOSTA = ['SIM', 'NÃO'];
+
+    // Função para exportar os registros filtrados (aba ativa) para Excel
+    function exportToExcel() {
+      try {
+        // Define aba atual
+        let tabAtual;
+        if (document.getElementById('tab-disponivel') && document.getElementById('tab-disponivel').classList.contains('active')) {
+          tabAtual = 'disponivel';
+        } else if (document.getElementById('tab-repasse') && document.getElementById('tab-repasse').classList.contains('active')) {
+          tabAtual = 'repasse';
+        } else {
+          tabAtual = 'total';
+        }
+        // Seleciona registros e filtro conforme aba
+        let registros = [];
+        let filtro;
+        if (tabAtual === 'disponivel') {
+          registros = dadosDisponivel.slice();
+          filtro = filtroDisponivel;
+        } else if (tabAtual === 'repasse') {
+          registros = dadosRepasse.slice();
+          filtro = filtroRepasse;
+        } else {
+          registros = dadosDisponivel.concat(dadosRepasse);
+          filtro = filtroTotal;
+        }
+        // Texto livre (modelo, placa ou cor)
+        if (filtro.search) {
+          const s = filtro.search.toLowerCase();
+          registros = registros.filter(item => {
+            return ((item.modelo || '').toLowerCase().includes(s)) ||
+                   ((item.placa || '').toLowerCase().includes(s)) ||
+                   ((item.cor || '').toLowerCase().includes(s));
+          });
+        }
+        // Proposta
+        if (filtro.proposta && filtro.proposta.length) {
+          registros = registros.filter(item => filtro.proposta.includes(item.proposta));
+        }
+        // Pátio
+        if (filtro.patio && filtro.patio.length) {
+          registros = registros.filter(item => filtro.patio.includes(item.patio));
+        }
+        // Modelo (apenas disponível e total)
+        if ((tabAtual === 'disponivel' || tabAtual === 'total') && filtro.modelo && filtro.modelo.length) {
+          registros = registros.filter(item => filtro.modelo.includes(normalizeModelo(item.modelo)));
+        }
+        // Dias (apenas disponível e total)
+        if ((tabAtual === 'disponivel' || tabAtual === 'total') && filtro.dias) {
+          const faixa = filtro.dias;
+          registros = registros.filter(item => {
+            if (faixa === '1-30') return item.dias >= 1 && item.dias <= 30;
+            if (faixa === '31-60') return item.dias >= 31 && item.dias <= 60;
+            if (faixa === '61-90') return item.dias >= 61 && item.dias <= 90;
+            if (faixa === '91+') return item.dias >= 91;
+            return true;
+          });
+        }
+        // Descrição Situação
+        if (filtro.descricao && filtro.descricao.length) {
+          const selecionadasNorm = filtro.descricao.map(normalizeDescricao);
+          registros = registros.filter(item => selecionadasNorm.includes(normalizeDescricao(item.descricao)));
+        }
+        // Verifica se existem registros após filtros
+        if (!registros || registros.length === 0) {
+          showStatus('⚠️ Nenhum registro filtrado para exportar.', true);
+          return;
+        }
+        // Prepara dados para exportação (usando valores numéricos brutos)
+        const dadosExport = registros.map(item => {
+          return {
+            'Proposta': item.proposta || '',
+            'Pátio': item.patio || '',
+            'Modelo': item.modelo || '',
+            'Dias': item.dias || 0,
+            'Ano': item.ano || '',
+            'Cor Externa': item.cor || '',
+            'Placa': item.placa || '',
+            'KM': item.km || '',
+            'Preço Venda': item.preco || 0,
+            'Descrição Situação': item.descricao || '',
+            'Total Nota Fábrica': item.custo || 0
+          };
+        });
+        const wb = XLSX.utils.book_new();
+        const nomeAba = tabAtual === 'disponivel' ? 'Disponível' : (tabAtual === 'repasse' ? 'Repasse' : 'Total');
+        const ws = XLSX.utils.json_to_sheet(dadosExport);
+        XLSX.utils.book_append_sheet(wb, ws, nomeAba);
+        const agora = new Date();
+        const dataStr = `${agora.getFullYear()}-${String(agora.getMonth()+1).padStart(2,'0')}-${String(agora.getDate()).padStart(2,'0')}`;
+        const nomeArquivo = `${nomeAba.toLowerCase()}_export_${dataStr}.xlsx`;
+        XLSX.writeFile(wb, nomeArquivo);
+        showStatus('✅ Exportação para Excel concluída com sucesso!');
+      } catch (err) {
+        console.error('Erro ao exportar Excel:', err);
+        showStatus(`❌ Erro ao exportar Excel: ${err.message}`, true);
+      }
+    }
 
     // Utilidades
     function showStatus(message, isError = false) {
