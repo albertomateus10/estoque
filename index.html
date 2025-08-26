@@ -170,9 +170,10 @@
           <th data-col="dias">Dias <span class="sort-arrow"></span></th>
           <th data-col="ano">Ano <span class="sort-arrow"></span></th>
           <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
-          <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
+          <!-- Reordenado: Placa e KM antes do Preço de Venda e o Preço ao lado da Descrição -->
           <th data-col="placa">Placa <span class="sort-arrow"></span></th>
           <th data-col="km">KM <span class="sort-arrow"></span></th>
+          <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
           <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
           <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
         </tr>
@@ -209,9 +210,10 @@
           <th data-col="dias">Dias <span class="sort-arrow"></span></th>
           <th data-col="ano">Ano <span class="sort-arrow"></span></th>
           <th data-col="cor">Cor Externa <span class="sort-arrow"></span></th>
-          <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
+          <!-- Reordenado: Placa e KM antes do Preço de Venda e o Preço ao lado da Descrição -->
           <th data-col="placa">Placa <span class="sort-arrow"></span></th>
           <th data-col="km">KM <span class="sort-arrow"></span></th>
+          <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
           <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
           <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
         </tr>
@@ -376,9 +378,9 @@
             <td>${item.dias||''}</td>
             <td>${item.ano||''}</td>
             <td>${item.cor||''}</td>
-            <td>${formatMoney(item.preco||0)}</td>
             <td>${item.placa||''}</td>
             <td>${item.km||''}</td>
+            <td>${formatMoney(item.preco||0)}</td>
             <td>${item.descricao||''}</td>
             <td>${formatMoney(item.custo||0)}</td>
           </tr>
