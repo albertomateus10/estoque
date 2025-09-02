@@ -198,6 +198,9 @@
           <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
           <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
           <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
+          <!-- Colunas de Margem Bruta e % Margem -->
+          <th data-col="margem">Margem Bruta <span class="sort-arrow"></span></th>
+          <th data-col="margemPercent">% Margem <span class="sort-arrow"></span></th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -238,6 +241,9 @@
           <th data-col="preco">Preço Venda <span class="sort-arrow"></span></th>
           <th data-col="descricao">Descricao Situação <span class="sort-arrow"></span></th>
           <th data-col="custo">Total Nota Fabrica <span class="sort-arrow"></span></th>
+          <!-- Colunas de Margem Bruta e % Margem -->
+          <th data-col="margem">Margem Bruta <span class="sort-arrow"></span></th>
+          <th data-col="margemPercent">% Margem <span class="sort-arrow"></span></th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -365,7 +371,9 @@
             'KM': item.km || '',
             'Preço Venda': item.preco || 0,
             'Descrição Situação': item.descricao || '',
-            'Total Nota Fábrica': item.custo || 0
+            'Total Nota Fábrica': item.custo || 0,
+            'Margem Bruta': (typeof item.margem !== 'undefined') ? item.margem : ((item.preco || 0) - (item.custo || 0)),
+            '% Margem': (typeof item.margemPercent !== 'undefined') ? item.margemPercent : ((item.preco || 0) !== 0 ? (((item.preco || 0) - (item.custo || 0)) / (item.preco || 1)) * 100 : 0)
           };
         });
         const wb = XLSX.utils.book_new();
@@ -490,19 +498,26 @@
         totalCusto += Number(item.custo);
         totalPreco += Number(item.preco);
         totalDias += Number(item.dias);
+        // Calcula valores de margem para exibição
+        const margemBrutaItem = Number(item.preco || 0) - Number(item.custo || 0);
+        const margemPercentItem = Number(item.preco || 0) !== 0 ? ((margemBrutaItem / Number(item.preco)) * 100) : 0;
+        const margemPercentFormatada = margemPercentItem.toFixed(2) + '%';
+        const corPercentual = margemPercentItem < 0 ? 'red' : 'inherit';
         tbody.innerHTML += `
           <tr>
-            <td>${item.proposta||''}</td>
-            <td>${item.patio||''}</td>
-            <td>${item.modelo||''}</td>
-            <td>${item.dias||''}</td>
-            <td>${item.ano||''}</td>
-            <td>${item.cor||''}</td>
-            <td>${item.placa||''}</td>
-            <td>${item.km||''}</td>
-            <td>${formatMoney(item.preco||0)}</td>
-            <td>${item.descricao||''}</td>
-            <td>${formatMoney(item.custo||0)}</td>
+            <td>${item.proposta || ''}</td>
+            <td>${item.patio || ''}</td>
+            <td>${item.modelo || ''}</td>
+            <td>${item.dias || ''}</td>
+            <td>${item.ano || ''}</td>
+            <td>${item.cor || ''}</td>
+            <td>${item.placa || ''}</td>
+            <td>${item.km || ''}</td>
+            <td>${formatMoney(item.preco || 0)}</td>
+            <td>${item.descricao || ''}</td>
+            <td>${formatMoney(item.custo || 0)}</td>
+            <td>${formatMoney(margemBrutaItem)}</td>
+            <td style="color:${corPercentual}">${margemPercentFormatada}</td>
           </tr>
         `;
       });
@@ -834,6 +849,11 @@
             const propostaRaw = colAKey ? row[colAKey] : '';
             const descricaoRaw = row[findCol(row, ['descricao situacao','descrição situação','situacao','situação'])] || '';
 
+            // Recupera e normaliza valores de preço de venda e custo para permitir cálculo da margem
+            const precoVal = Number(row[findCol(row, ['preco venda','preço venda','preco','preço'])] || 0);
+            const custoVal = Number(row[findCol(row, ['total nota fabrica','nota fabrica','custo','valor de custo'])] || 0);
+            const margemVal = precoVal - custoVal;
+            const margemPercentVal = precoVal !== 0 ? ((margemVal / precoVal) * 100) : 0;
             return {
               proposta: (propostaRaw !== undefined && String(propostaRaw).toString().trim() !== '') ? 'SIM' : 'NÃO',
               patio: row[findCol(row, ['patio','pátio'])] || '',
@@ -841,11 +861,13 @@
               dias: Number(row[findCol(row, ['dpt','dias','dias estoque','dias em estoque'])] || 0),
               ano: row[findCol(row, ['ano/m','ano','ano modelo'])] || '',
               cor: row[findCol(row, ['cor externa','cor'])] || '',
-              preco: Number(row[findCol(row, ['preco venda','preço venda','preco','preço'])] || 0),
+              preco: precoVal,
               placa: row[findCol(row, ['placa'])] || '',
               km: row[findCol(row, ['km','quilometragem'])] || '',
               descricao: descricaoRaw,
-              custo: Number(row[findCol(row, ['total nota fabrica','nota fabrica','custo','valor de custo'])] || 0)
+              custo: custoVal,
+              margem: margemVal,
+              margemPercent: margemPercentVal
             }
           }
 
