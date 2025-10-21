@@ -28,6 +28,9 @@
     .summary-box.margem strong { color: #fff; }
     .summary-box.km { background: #f7b731; color: #23272f; }
     .summary-box.km strong { color: #23272f; }
+    /* Opcional: destaque suave para a cor mais frequente */
+    .summary-box.cor { background: #ffeaa7; color: #23272f; }
+    .summary-box.cor strong { color: #23272f; }
 
     .filters { margin-bottom: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
     .filters input { margin-right: 10px; padding: 5px 8px; }
@@ -102,8 +105,12 @@
     <div class="summary">
       <div class="summary-box"><div>Quantidade de veículos</div><strong id="qtd-disponivel">0</strong></div>
       <div class="summary-box"><div>Média dos Dias de Estoque</div><strong id="media-dias-disponivel">0</strong></div>
-      <div class="summary-box km"><div>KM média dos Veículos</div><strong id="media-km-disponivel">0</strong></div>
-      <div class="summary-box"><div>Média dos Anos dos Veículos</div><strong id="media-ano-disponivel">0</strong></div>
+      <div class="summary-box km"><div>KM média</div><strong id="media-km-disponivel">0</strong></div>
+
+      <!-- >>> NOVO KPI: Cor mais frequente (à direita do KM média) -->
+      <div class="summary-box cor"><div>Cor mais frequente no estoque</div><strong id="cor-frequente-disponivel">-</strong></div>
+
+      <div class="summary-box"><div>Média do Ano</div><strong id="media-ano-disponivel">0</strong></div>
       <div class="summary-box"><div>Valor Médio do Estoque (Custo)</div><strong id="media-custo-disponivel">R$ 0,00</strong></div>
       <div class="summary-box"><div>Média do Preço de Venda</div><strong id="media-preco-venda-disponivel">R$ 0,00</strong></div>
       <div class="summary-box"><div>Preço de Custo do estoque</div><strong id="total-custo-disponivel">R$ 0,00</strong></div>
@@ -330,6 +337,24 @@
     function stripAccents(s) { return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
     function normalizeDescricao(s) { return stripAccents((s||'').toUpperCase()).trim(); }
 
+    // >>> NOVO: helpers para cor principal
+    const CORES_BASE = ['PRETO','BRANCO','CINZA','PRATA','AZUL','VERMELHO','VERDE','AMARELO','MARROM','BEGE','LARANJA','BORDO','VINHO','DOURADO','ROXO'];
+    function primeiraPalavraAlpha(s) {
+      const m = stripAccents(String(s||'').toUpperCase()).match(/[A-ZÁ-Ú]+/g);
+      return m && m.length ? m[0] : '';
+    }
+    function normalizeCorPrincipal(corRaw) {
+      const texto = stripAccents(String(corRaw||'').toUpperCase()).trim();
+      if (!texto) return '';
+      // prioridade: primeira palavra
+      const p = primeiraPalavraAlpha(texto);
+      if (CORES_BASE.includes(p)) return p;
+      // fallback: se encontrar alguma cor-base em qualquer posição
+      for (const base of CORES_BASE) { if (texto.includes(base)) return base; }
+      return p || '';
+    }
+    function properCase(s) { return (s||'').toLowerCase().replace(/^\w|\s\w/g, c => c.toUpperCase()); }
+
     function showTab(idx) {
       document.querySelectorAll('.tab-btn').forEach((btn, i) => btn.classList.toggle('active', i === idx));
       document.querySelectorAll('.tab-content').forEach((tab, i) => tab.classList.toggle('active', i === idx));
@@ -351,6 +376,20 @@
       }).filter(x => !isNaN(x) && x > 1900 && x < 2100);
       if (!anos.length) return '-';
       return (anos.reduce((a, b) => a + b, 0) / anos.length).toFixed(1);
+    }
+
+    // >>> NOVO: cor mais frequente (considerando filtros da aba Disponível)
+    function calcularCorMaisFrequente(dados) {
+      const cont = {};
+      dados.forEach(item => {
+        const base = normalizeCorPrincipal(item.cor);
+        if (!base) return;
+        cont[base] = (cont[base] || 0) + 1;
+      });
+      const pares = Object.entries(cont);
+      if (!pares.length) return { nome: '-', qtd: 0 };
+      pares.sort((a,b)=>b[1]-a[1]);
+      return { nome: properCase(pares[0][0]), qtd: pares[0][1] };
     }
 
     // TABELAS
@@ -456,6 +495,13 @@
         document.getElementById('media-ano-disponivel').textContent = calcularMediaAno(dados);
         document.getElementById('media-custo-disponivel').textContent = dados.length ? formatMoney(totalCusto/dados.length) : 'R$ 0,00';
         document.getElementById('media-preco-venda-disponivel').textContent = dados.length ? formatMoney(totalPreco/dados.length) : 'R$ 0,00';
+
+        // >>> NOVO: atualizar KPI da cor mais frequente
+        const corTop = calcularCorMaisFrequente(dados);
+        const elCor = document.getElementById('cor-frequente-disponivel');
+        elCor.textContent = corTop.qtd ? `${corTop.nome} (${corTop.qtd})` : '-';
+        elCor.title = corTop.qtd ? `Quantidade: ${corTop.qtd}` : '';
+
         preencherGraficos('pie-modelos', 'bar-dias', dados);
         atualizarBarraLojasDisponivel(dados);
       } else {
