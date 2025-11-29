@@ -8,6 +8,12 @@
     h1 { color: #2c3e50; }
     .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
     .base-upload { display: flex; align-items: center; gap: 8px; font-size: 1.1em; background: #fff; padding: 3px 8px; border-radius: 8px; box-shadow: 0 2px 5px #0001; }
+
+    .base-upload.dragover {
+      border: 2px dashed #2980b9;
+      background: #e8f4ff;
+    }
+
     .base-upload label { font-weight: bold; color: #2980b9; margin-right: 3px; }
     .base-upload input[type="file"] { display: none; }
     .base-upload .file-btn { background: #7ed6b5; color: #23272f; border: none; border-radius: 6px; padding: 3px 7px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
@@ -28,7 +34,6 @@
     .summary-box.margem strong { color: #fff; }
     .summary-box.km { background: #f7b731; color: #23272f; }
     .summary-box.km strong { color: #23272f; }
-    /* Opcional: destaque suave para a cor mais frequente */
     .summary-box.cor { background: #ffeaa7; color: #23272f; }
     .summary-box.cor strong { color: #23272f; }
 
@@ -63,17 +68,14 @@
 
     .credit { position: absolute; bottom: 6px; right: 20px; color: #ffff; font-size: 0.75em; pointer-events: none; }
 
-    /* Indicadores de status */
     .status-info { border-radius: 4px; padding: 8px 12px; margin: 10px 0; font-size: 0.9em; }
     .status-success { background: #e8f5e8; border: 1px solid #4caf50; color: #2e7d32; }
     .status-error { background: #ffebee; border: 1px solid #f44336; color: #c62828; }
 
-    /* Botões de exportação */
     .export-buttons { display: flex; align-items: center; gap: 8px; }
     .export-btn { background: #20bf6b; color: #fff; border: none; border-radius: 6px; padding: 4px 10px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
     .export-btn:hover { opacity: 0.85; }
 
-    /* >>> NOVO: estilo para linha inteira negativa <<< */
     tr.neg-row td { color: #c62828 !important; background: #ffebee !important; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -84,7 +86,7 @@
     <div class="export-buttons">
       <button class="export-btn" onclick="exportToExcel()">Exportar Excel</button>
     </div>
-    <div class="base-upload">
+    <div class="base-upload" id="base-upload">
       <label for="basefile">Base:</label>
       <button class="file-btn" onclick="document.getElementById('basefile').click()">Selecionar Excel</button>
       <input type="file" id="basefile" accept=".xlsx,.xls" />
@@ -92,7 +94,6 @@
     </div>
   </div>
 
-  <!-- Indicador de status -->
   <div id="status-info" class="status-info" style="display: none;"></div>
 
   <div class="tabs">
@@ -100,16 +101,12 @@
     <div class="credit">Desenvolvido por Alberto Mateus para o Grupo San Marino.</div>
   </div>
 
-  <!-- Aba 1: Estoque Disponível -->
   <div class="tab-content active" id="tab-disponivel">
     <div class="summary">
       <div class="summary-box"><div>Quantidade de veículos</div><strong id="qtd-disponivel">0</strong></div>
       <div class="summary-box"><div>Média dos Dias de Estoque</div><strong id="media-dias-disponivel">0</strong></div>
       <div class="summary-box km"><div>KM média</div><strong id="media-km-disponivel">0</strong></div>
-
-      <!-- >>> NOVO KPI: Cor mais frequente (à direita do KM média) -->
       <div class="summary-box cor"><div>Cor mais frequente no estoque</div><strong id="cor-frequente-disponivel">-</strong></div>
-
       <div class="summary-box"><div>Média do Ano</div><strong id="media-ano-disponivel">0</strong></div>
       <div class="summary-box"><div>Valor Médio do Estoque (Custo)</div><strong id="media-custo-disponivel">R$ 0,00</strong></div>
       <div class="summary-box"><div>Média do Preço de Venda</div><strong id="media-preco-venda-disponivel">R$ 0,00</strong></div>
@@ -166,7 +163,6 @@
     </table>
   </div>
 
-  <!-- Aba 2: Repasses Não Vendidos -->
   <div class="tab-content" id="tab-repasse">
     <h1>REPASSSES NÃO VENDIDOS</h1>
     <div class="summary">
@@ -208,7 +204,6 @@
     </table>
   </div>
 
-  <!-- Aba 3: Total -->
   <div class="tab-content" id="tab-total">
     <h1>TOTAL</h1>
     <div class="summary">
@@ -250,7 +245,6 @@
     const OPCOES_SITUACAO = ['DISPONÍVEL', 'INDISPONÍVEL'];
     const OPCOES_PROPOSTA = ['SIM', 'NÃO'];
 
-    // Exportar Excel (mantido)
     function exportToExcel() {
       try {
         let tabAtual;
@@ -264,14 +258,8 @@
         else if (tabAtual === 'repasse') { registros = dadosRepasse.slice(); filtro = filtroRepasse; }
         else { registros = dadosDisponivel.concat(dadosRepasse); filtro = filtroTotal; }
 
-        if (filtro.search) {
-          const s = filtro.search.toLowerCase();
-          registros = registros.filter(item =>
-            ((item.modelo || '').toLowerCase().includes(s)) ||
-            ((item.placa || '').toLowerCase().includes(s)) ||
-            ((item.cor || '').toLowerCase().includes(s))
-          );
-        }
+        registros = filterBySearch(registros, filtro.search);
+
         if (filtro.proposta?.length) { registros = registros.filter(item => filtro.proposta.includes(item.proposta)); }
         if (filtro.patio?.length) { registros = registros.filter(item => filtro.patio.includes(item.patio)); }
         if ((tabAtual === 'disponivel' || tabAtual === 'total') && filtro.modelo?.length) {
@@ -324,7 +312,6 @@
       }
     }
 
-    // Utilidades
     function showStatus(message, isError = false) {
       const statusDiv = document.getElementById('status-info');
       statusDiv.style.display = 'block';
@@ -333,11 +320,25 @@
       if (!isError) setTimeout(() => { statusDiv.style.display = 'none'; }, 5000);
     }
     function formatMoney(valor) { return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
-    function normalizeModelo(modelo) { return (modelo||'').split(' ')[0].toUpperCase(); }
+
     function stripAccents(s) { return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+
+    // NOVO normalizeModelo: foca no nome do carro (ex.: FIAT/ARGO -> ARGO)
+    function normalizeModelo(modelo) {
+      let texto = stripAccents((modelo || '').toUpperCase()).trim();
+      if (!texto) return '';
+      const partesSlash = texto.split('/');
+      texto = partesSlash[partesSlash.length - 1].trim();
+      const marcas = ['FIAT','CHEVROLET','GM','VW','VOLKSWAGEN','RENAULT','PEUGEOT','CITROEN','CITROËN','JEEP','NISSAN','TOYOTA','HONDA','HYUNDAI','FORD'];
+      let palavras = texto.split(/\s+/);
+      if (palavras.length > 1 && marcas.includes(palavras[0])) {
+        palavras = palavras.slice(1);
+      }
+      return palavras[0] || '';
+    }
+
     function normalizeDescricao(s) { return stripAccents((s||'').toUpperCase()).trim(); }
 
-    // >>> NOVO: helpers para cor principal
     const CORES_BASE = ['PRETO','BRANCO','CINZA','PRATA','AZUL','VERMELHO','VERDE','AMARELO','MARROM','BEGE','LARANJA','BORDO','VINHO','DOURADO','ROXO'];
     function primeiraPalavraAlpha(s) {
       const m = stripAccents(String(s||'').toUpperCase()).match(/[A-ZÁ-Ú]+/g);
@@ -346,10 +347,8 @@
     function normalizeCorPrincipal(corRaw) {
       const texto = stripAccents(String(corRaw||'').toUpperCase()).trim();
       if (!texto) return '';
-      // prioridade: primeira palavra
       const p = primeiraPalavraAlpha(texto);
       if (CORES_BASE.includes(p)) return p;
-      // fallback: se encontrar alguma cor-base em qualquer posição
       for (const base of CORES_BASE) { if (texto.includes(base)) return base; }
       return p || '';
     }
@@ -378,7 +377,6 @@
       return (anos.reduce((a, b) => a + b, 0) / anos.length).toFixed(1);
     }
 
-    // >>> NOVO: cor mais frequente (considerando filtros da aba Disponível)
     function calcularCorMaisFrequente(dados) {
       const cont = {};
       dados.forEach(item => {
@@ -392,30 +390,41 @@
       return { nome: properCase(pares[0][0]), qtd: pares[0][1] };
     }
 
-    // TABELAS
+    // NOVO: busca inteligente por modelo / placa / cor
+    function matchModeloFiltro(modelo, searchRaw) {
+      const termo = stripAccents((searchRaw || '').toUpperCase()).trim();
+      if (!termo) return true;
+      const modeloRaw = stripAccents((modelo || '').toUpperCase());
+      const regex = new RegExp(`(^|[\\s/])${termo}($|[\\s/])`);
+      if (regex.test(modeloRaw)) return true;
+      if (normalizeModelo(modeloRaw) === termo) return true;
+      return false;
+    }
+
+    function filterBySearch(lista, searchRaw) {
+      const termo = (searchRaw || '').trim();
+      if (!termo) return lista;
+      const termoNorm = stripAccents(termo.toLowerCase());
+      return lista.filter(item => {
+        const modeloOk = matchModeloFiltro(item.modelo, termo);
+        const placaOk  = stripAccents((item.placa||'').toLowerCase()).includes(termoNorm);
+        const corOk    = stripAccents((item.cor||'').toLowerCase()).includes(termoNorm);
+        return modeloOk || placaOk || corOk;
+      });
+    }
+
     function preencherTabela(tab) {
       const tbody = document.querySelector(`#tabela-${tab} tbody`);
       let dados = (tab === 'disponivel' ? dadosDisponivel : dadosRepasse).slice();
       let filtro = (tab === 'disponivel' ? filtroDisponivel : filtroRepasse);
 
-      // Texto livre
-      if (filtro.search) {
-        const s = filtro.search.toLowerCase();
-        dados = dados.filter(item =>
-          (item.modelo||'').toLowerCase().includes(s) ||
-          (item.placa||'').toLowerCase().includes(s) ||
-          (item.cor||'').toLowerCase().includes(s)
-        );
-      }
-      // Proposta
+      dados = filterBySearch(dados, filtro.search);
+
       if (filtro.proposta.length) { dados = dados.filter(item => filtro.proposta.includes(item.proposta)); }
-      // Pátio
       if (filtro.patio.length) { dados = dados.filter(item => filtro.patio.includes(item.patio)); }
-      // Modelo
       if (tab === 'disponivel' && filtro.modelo.length) {
         dados = dados.filter(item => filtro.modelo.includes(normalizeModelo(item.modelo)));
       }
-      // Dias
       if (tab === 'disponivel' && filtro.dias) {
         const faixa = filtro.dias;
         dados = dados.filter(item => {
@@ -425,13 +434,11 @@
           if (faixa === '91+') return item.dias >= 91;
         });
       }
-      // Situação
       if (filtro.descricao.length) {
         const selecionadasNorm = filtro.descricao.map(normalizeDescricao);
         dados = dados.filter(item => selecionadasNorm.includes(normalizeDescricao(item.descricao)));
       }
 
-      // Ordenação
       let sort = (tab === 'disponivel' ? sortDisponivel : sortRepasse);
       if (sort.col) {
         dados.sort((a, b) => {
@@ -444,7 +451,6 @@
         });
       }
 
-      // Render + Totais
       tbody.innerHTML = '';
       let totalCusto = 0, totalPreco = 0, totalDias = 0;
       dados.forEach(item => {
@@ -455,8 +461,6 @@
         const margemBrutaItem = Number(item.preco || 0) - Number(item.custo || 0);
         const margemPercentItem = Number(item.preco || 0) !== 0 ? ((margemBrutaItem / Number(item.preco)) * 100) : 0;
         const margemPercentFormatada = margemPercentItem.toFixed(2) + '%';
-
-        // >>> NOVO: define classe da linha quando a margem é negativa <<<
         const rowClass = (margemBrutaItem < 0) ? 'neg-row' : '';
 
         tbody.innerHTML += `
@@ -478,7 +482,6 @@
         `;
       });
 
-      // KPIs por aba + Margem Média por Veículo
       if (tab === 'disponivel') {
         document.getElementById('qtd-disponivel').textContent = dados.length;
         document.getElementById('total-custo-disponivel').textContent = formatMoney(totalCusto);
@@ -496,7 +499,6 @@
         document.getElementById('media-custo-disponivel').textContent = dados.length ? formatMoney(totalCusto/dados.length) : 'R$ 0,00';
         document.getElementById('media-preco-venda-disponivel').textContent = dados.length ? formatMoney(totalPreco/dados.length) : 'R$ 0,00';
 
-        // >>> NOVO: atualizar KPI da cor mais frequente
         const corTop = calcularCorMaisFrequente(dados);
         const elCor = document.getElementById('cor-frequente-disponivel');
         elCor.textContent = corTop.qtd ? `${corTop.nome} (${corTop.qtd})` : '-';
@@ -519,17 +521,11 @@
     function preencherResumoTotal() {
       let dados = [...dadosDisponivel, ...dadosRepasse];
 
-      if (filtroTotal.search) {
-        const s = filtroTotal.search.toLowerCase();
-        dados = dados.filter(item =>
-          (item.modelo||'').toLowerCase().includes(s) ||
-          (item.placa||'').toLowerCase().includes(s) ||
-          (item.cor||'').toLowerCase().includes(s)
-        );
-      }
+      dados = filterBySearch(dados, filtroTotal.search);
+
       if (filtroTotal.proposta.length) { dados = dados.filter(item => filtroTotal.proposta.includes(item.proposta)); }
-      if (filtroTotal.patio.length) { dados = dados.filter(item => filtroTotal.patio.includes(item.patio)); }
-      if (filtroTotal.modelo.length) { dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo))); }
+      if (filtroTotal.patio.length)    { dados = dados.filter(item => filtroTotal.patio.includes(item.patio)); }
+      if (filtroTotal.modelo.length)   { dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo))); }
       if (filtroTotal.dias) {
         const faixa = filtroTotal.dias;
         dados = dados.filter(item => {
@@ -565,17 +561,11 @@
     function preencherGraficosTotal() {
       let dados = [...dadosDisponivel, ...dadosRepasse];
 
-      if (filtroTotal.search) {
-        const s = filtroTotal.search.toLowerCase();
-        dados = dados.filter(item =>
-          (item.modelo||'').toLowerCase().includes(s) ||
-          (item.placa||'').toLowerCase().includes(s) ||
-          (item.cor||'').toLowerCase().includes(s)
-        );
-      }
+      dados = filterBySearch(dados, filtroTotal.search);
+
       if (filtroTotal.proposta.length) { dados = dados.filter(item => filtroTotal.proposta.includes(item.proposta)); }
-      if (filtroTotal.patio.length) { dados = dados.filter(item => filtroTotal.patio.includes(item.patio)); }
-      if (filtroTotal.modelo.length) { dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo))); }
+      if (filtroTotal.patio.length)    { dados = dados.filter(item => filtroTotal.patio.includes(item.patio)); }
+      if (filtroTotal.modelo.length)   { dados = dados.filter(item => filtroTotal.modelo.includes(normalizeModelo(item.modelo))); }
       if (filtroTotal.dias) {
         const faixa = filtroTotal.dias;
         dados = dados.filter(item => {
@@ -675,7 +665,6 @@
       });
     }
 
-    // Helpers Multi-select
     function createMultiSelect(id, options, selected, onChange, label) {
       const container = document.getElementById(id);
       container.innerHTML = `
@@ -704,14 +693,12 @@
       createMultiSelect(id, options, selected, onChange, label);
     }
 
-    // Listas únicas
     function getPatiosDisponivel() { return [...new Set(dadosDisponivel.map(x=>x.patio).filter(Boolean))].sort(); }
     function getModelosDisponivel() { return [...new Set(dadosDisponivel.map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort(); }
     function getPatiosRepasse() { return [...new Set(dadosRepasse.map(x=>x.patio).filter(Boolean))].sort(); }
     function getPatiosTotal() { return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>x.patio).filter(Boolean))].sort(); }
     function getModelosTotal() { return [...new Set([...dadosDisponivel, ...dadosRepasse].map(x=>normalizeModelo(x.modelo)).filter(Boolean))].sort(); }
 
-    // Identifica colunas por similaridade
     function findCol(obj, keys) {
       const norm = s => s ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/gi,'').toLowerCase() : '';
       const objKeys = Object.keys(obj).map(k => norm(k));
@@ -722,7 +709,6 @@
       return null;
     }
 
-    // Detecta automaticamente a linha do cabeçalho
     function findDataStartRow(sheet) {
       try {
         if (!sheet || !sheet['!ref']) return 0;
@@ -773,10 +759,14 @@
       }
     }
 
-    // Upload base
-    document.getElementById('basefile').addEventListener('change', function(e) {
-      const file = e.target.files[0];
+    // NOVO: função única para tratar o arquivo (input ou arrastar)
+    function handleBaseFile(file) {
       if (!file) return;
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      if (!['xlsx','xls'].includes(ext)) {
+        showStatus('❌ Arquivo inválido. Envie um Excel (.xlsx ou .xls).', true);
+        return;
+      }
 
       document.getElementById('basefile-name').textContent = file.name;
       showStatus('📊 Processando arquivo Excel...');
@@ -842,7 +832,6 @@
             return;
           }
 
-          // MULTISELECTS
           updateMultiSelect('multiselect-proposta-disponivel', OPCOES_PROPOSTA, filtroDisponivel.proposta, v => { filtroDisponivel.proposta = v; preencherTabela('disponivel'); }, 'Proposta');
           updateMultiSelect('multiselect-proposta-repasse',   OPCOES_PROPOSTA, filtroRepasse.proposta,   v => { filtroRepasse.proposta   = v; preencherTabela('repasse');   }, 'Proposta');
           updateMultiSelect('multiselect-proposta-total',     OPCOES_PROPOSTA, filtroTotal.proposta,     v => { filtroTotal.proposta     = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Proposta');
@@ -868,10 +857,38 @@
       };
       reader.onerror = function() { showStatus('❌ Erro ao ler o arquivo. Verifique se é um arquivo Excel válido.', true); };
       reader.readAsArrayBuffer(file);
+    }
+
+    document.getElementById('basefile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      handleBaseFile(file);
     });
 
-    // Eventos e sort nas colunas
     document.addEventListener('DOMContentLoaded', function() {
+      const baseDropArea = document.getElementById('base-upload');
+
+      ['dragenter','dragover'].forEach(evtName => {
+        baseDropArea.addEventListener(evtName, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          baseDropArea.classList.add('dragover');
+        });
+      });
+      ['dragleave','drop'].forEach(evtName => {
+        baseDropArea.addEventListener(evtName, e => {
+          e.preventDefault();
+          e.stopPropagation();
+          baseDropArea.classList.remove('dragover');
+        });
+      });
+      baseDropArea.addEventListener('drop', e => {
+        const files = e.dataTransfer.files;
+        if (files && files[0]) {
+          document.getElementById('basefile').files = files;
+          handleBaseFile(files[0]);
+        }
+      });
+
       document.getElementById('search-repasse').addEventListener('input', e => { filtroRepasse.search = e.target.value; preencherTabela('repasse'); });
       document.getElementById('search-disponivel').addEventListener('input', e => { filtroDisponivel.search = e.target.value; preencherTabela('disponivel'); });
       document.getElementById('search-total').addEventListener('input', e => { filtroTotal.search = e.target.value; preencherResumoTotal(); preencherGraficosTotal(); });
@@ -891,7 +908,6 @@
         });
       });
 
-      // Inicialização visual (antes de carregar a base)
       updateMultiSelect('multiselect-proposta-disponivel', OPCOES_PROPOSTA, [], v => { filtroDisponivel.proposta = v; preencherTabela('disponivel'); }, 'Proposta');
       updateMultiSelect('multiselect-proposta-repasse',   OPCOES_PROPOSTA, [], v => { filtroRepasse.proposta   = v; preencherTabela('repasse');   }, 'Proposta');
       updateMultiSelect('multiselect-proposta-total',     OPCOES_PROPOSTA, [], v => { filtroTotal.proposta     = v; preencherResumoTotal(); preencherGraficosTotal(); }, 'Proposta');
